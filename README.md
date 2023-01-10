@@ -1,5 +1,5 @@
 # Chat-GPT
-> Although this module is completely free, the AI it uses is not. The module requires an API key obtained from https://beta.openai.com/account/api-keys and an OpenAI account with valid payment information. The pricing can be found at https://openai.com/api/pricing/, but you can expect each non-custom request made by this module to cost even less than $0.0001 (1/10th of a single cent). It is advised to set a monthly usage limit if you are worried about costs, you can do so in your account settings here https://beta.openai.com/account/billing/limits.
+> Although this module is completely free, the AI it uses is not. The module requires an API key obtained from https://beta.openai.com/account/api-keys and an OpenAI account with valid payment information. The pricing can be found at https://openai.com/api/pricing/, but on average you can expect each non-custom request made by this module to cost about $0.0002 (2/10th of a single cent). It is advised to set a monthly usage limit if you are worried about costs, you can do so in your account settings here https://beta.openai.com/account/billing/limits.
 
 > This module does not require any credentials except for your API key, which is stored locally in your Foundry settings. All billing is done from your OpenAI account.
 
