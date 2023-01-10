@@ -1,0 +1,23 @@
+{
+  "id": "chat-gpt",
+  "title": "Chat GPT",
+  "description": "Implements the Chat GPT AI into Foundry.",
+  "version": "0.0.1",
+  "authors": [
+    {
+      "name": "Pepijn Sietsema",
+      "url": "https://ko-fi.com/pepijn",
+      "flags": {}
+    }
+  ],
+  "compatibility": {
+    "minimum": "10",
+    "verified": "10"
+  },
+  "esmodules": [
+    "scripts/main.js"
+  ],
+  "url": "https://github.com/PepijnMC/ElevationDragRuler",
+  "manifest": "",
+  "download": ""
+}
