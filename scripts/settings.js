@@ -7,6 +7,15 @@ export function registerSettings() {
 		type: String,
 		default: ''
 	});
+
+	game.settings.register('ai-description-generator', 'system', {
+		name: 'System',
+		hint: 'The name of the (public) system you are using. Will be used to provide context.',
+		scope: 'world',
+		config: true,
+		type: String,
+		default: game.system.title
+	});
 	
 	game.settings.register('ai-description-generator', 'world', {
 		name: 'Setting',
@@ -42,7 +51,7 @@ export function registerSettings() {
 		config: true,
 		type: Number,
 		range: {min: 0, max: 1, step: 0.05},
-		default: 0.5
+		default: 0.7
 	});
 
 	game.settings.register('ai-description-generator', 'frequency_penalty', {

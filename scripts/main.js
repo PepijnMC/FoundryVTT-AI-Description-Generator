@@ -1,6 +1,6 @@
 import {registerSettings } from './settings.js';
 import { registerAPI } from './api.js';
-import { constructPrompt } from './gpt.js';
+import { constructPrompt } from './generator.js';
 
 Hooks.once('init', () => {
 	registerSettings();
@@ -14,19 +14,18 @@ Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
 		icon: 'fas fa-comment-dots',
 		class: 'gpt-actor-button',
 		onclick: () => {
-			constructPrompt(game.system.title, game.settings.get('ai-description-generator', 'world'), 'creature', sheet.object.name, game.settings.get('ai-description-generator', 'key'))
+			constructPrompt(game.settings.get('ai-description-generator', 'system'), game.settings.get('ai-description-generator', 'world'), 'creature', sheet.object.name, game.settings.get('ai-description-generator', 'key'))
 		}
 	})
 })
 
 Hooks.on('getItemSheetHeaderButtons', (sheet, headerButtons) => {
-	console.log(sheet)
 	headerButtons.unshift({
 		label: 'GPT-3',
 		icon: 'fas fa-comment-dots',
 		class: 'gpt-actor-button',
 		onclick: () => {
-			constructPrompt(game.system.title, game.settings.get('ai-description-generator', 'world'), sheet.object.type == 'spell' ? 'spell': 'item', sheet.object.name, game.settings.get('ai-description-generator', 'key'))
+			constructPrompt(game.settings.get('ai-description-generator', 'system'), game.settings.get('ai-description-generator', 'world'), sheet.object.type == 'spell' ? 'spell': 'item', sheet.object.name, game.settings.get('ai-description-generator', 'key'))
 		}
 	})
 })
