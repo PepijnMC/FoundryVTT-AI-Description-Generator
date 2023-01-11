@@ -11,7 +11,7 @@ All actors, items, and spells have a button added in their header for the GM to 
 ## API
 Functions to construct and send your own prompts are provided under `game.modules.get('ai-description-generator').api`:
 - `constructPrompt`: Construct and sends a prompt based on the provided context similar to how the base module does it.
-	- `system`: The RPG system to be used for context.
+	- `system`: The RPG system to be used for context. Use `game.settings.get('ai-description-generator', 'system')` to use the system that was provided in the module's settings.
 	- `world`: The world/setting to be used for context. Use `game.settings.get('ai-description-generator', 'world')` to use the world that was provided in the module's settings.
 	- `entityType`: Either `creature`, `item`, or `spell`.
 	- `subject`: The name of the subject.
