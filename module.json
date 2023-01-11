@@ -2,7 +2,7 @@
   "id": "ai-description-generator",
   "title": "AI Description Generator",
   "description": "Utilizes the GPT-3 AI to generate descriptions from within Foundry.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "authors": [
     {
       "name": "Pepijn Sietsema",
