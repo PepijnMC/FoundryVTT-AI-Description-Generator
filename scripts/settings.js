@@ -94,7 +94,7 @@ export function registerSettings() {
 
 	game.settings.register('ai-description-generator', 'api', {
 		name: 'Enable API Functions',
-		hint: 'Provides functions to construct and send prompts yourself.',
+		hint: 'Exposes functions to construct and send prompts in macros or other modules.',
 		scope: 'world',
 		config: true,
 		type: Boolean,
