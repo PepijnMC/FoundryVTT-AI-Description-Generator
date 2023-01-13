@@ -15,6 +15,10 @@ By default your current rpg system is integrated into the prompt to give GPT-3 t
 ## Language Support
 By default your current FoundryVTT language is integrated into the prompt to encourage GPT-3 to reply in that language. GPT-3 was trained mainly in English so the quality of results may vary in other languages.
 
+If you want to have some fun, try out `Pirate Speech`.
+
+![Pirate Speech Description](https://github.com/PepijnMC/FoundryVTT-AI-Description-Generator/blob/main/media/Pirate%20Language.png?raw=true)
+
 ## Chat Commands
 There are two new commands available to the GM to send prompts to GPT-3.
 
