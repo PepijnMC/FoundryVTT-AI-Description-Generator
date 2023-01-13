@@ -1,13 +1,13 @@
-export function constructPrompt(system, world, entityType, subject, key) {
+export function constructPrompt(system, world, subjectType, subject, key) {
 	var prompt = `This is a tabletop roleplaying game using the ${system}`;
 	if (!system.toLowerCase().includes('system')) prompt += ' system';
 	if (world) prompt += ` and the ${world} setting`;
 	prompt += `. Give a cool short sensory description the game master can use for a ${subject}`;
-	switch (entityType.toLowerCase()) {
+	switch (subjectType.toLowerCase()) {
 		case 'creature':
 		case 'item':
 		case 'spell':
-			prompt += ` ${entityType}`;
+			prompt += ` ${subjectType}`;
 	}
 	prompt += '.';
 	console.log(`AI Description Generator | Sending the following prompt to GPT-3: ${prompt}`);
@@ -41,7 +41,8 @@ export function sendPrompt(prompt, key) {
 				if (s == "") s = "No response";
 				response += s;
 			}
-			const message = {user: game.user, speaker: {alias: 'GPT-3'}, content: response}
+			const speaker = game.settings.get('ai-description-generator', 'ai_name')
+			const message = {user: game.user, speaker: {alias: speaker}, content: response}
 			if (game.settings.get('ai-description-generator', 'whisper')) message['whisper'] = [game.userId]
 			ChatMessage.create(message);        
 		}

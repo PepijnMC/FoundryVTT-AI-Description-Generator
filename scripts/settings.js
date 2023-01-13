@@ -35,6 +35,15 @@ export function registerSettings() {
 		default: false
 	});
 
+	game.settings.register('ai-description-generator', 'ai_name', {
+		name: 'AI Name',
+		hint: 'The name of the AI to be used for its chat messages.',
+		scope: 'world',
+		config: true,
+		type: String,
+		default: 'GPT-3'
+	});
+
 	game.settings.register('ai-description-generator', 'max_tokens', {
 		name: 'AI Max Tokens',
 		hint: 'The maximum amount of tokens the AI can use per request.',

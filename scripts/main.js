@@ -1,6 +1,7 @@
 import {registerSettings } from './settings.js';
 import { registerAPI } from './api.js';
 import { constructPrompt } from './generator.js';
+import { addChatCommands } from './chat_commands.js';
 
 Hooks.once('init', () => {
 	registerSettings();
@@ -29,3 +30,5 @@ Hooks.on('getItemSheetHeaderButtons', (sheet, headerButtons) => {
 		}
 	})
 })
+
+Hooks.on('chatMessage', addChatCommands);
