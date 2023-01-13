@@ -9,6 +9,12 @@
 
 GPT-3 is a text-based AI by [OpenAI](https://beta.openai.com/). This module provides a user-friendly implentation to communicate with its API from within your Foundry games to generate descriptions on the fly.
 
+## System Support
+By default your current rpg system is integrated into the prompt to give GPT-3 the context it needs. By the nature of GPT-3 it will work better for popular systems and worse for very niche systems. If your system produces subpar results you can manually change the system in the settings to something that provides more context than just the system's name.
+
+## Language Support
+By default your current FoundryVTT language is integrated into the prompt to encourage GPT-3 to reply in that language. GPT-3 was trained mainly in English so the quality of results may vary in other languages.
+
 ## Chat Commands
 There are two new commands available to the GM to send prompts to GPT-3.
 
@@ -78,17 +84,18 @@ Please report issues and propose feature requests <a href="https://github.com/Pe
 The module will never send a request to GPT-3 without being told to by pressing a button, using chat commands, or using the API in macros or other modules. Nevertheless if you ever suspect you are being charged for unprovoked requests from this module please disable the module immediately and raise a critical issue.
 
 ## API
+> Requires the module's 'Enable API Functions' setting to be enabled.
 
-> WARNING
-> Using any of these functions will send a request to GPT-3 for which you will be charged like any other request made by this module. As such please be careful implenting them in macros and other modules. Test your code well before implementing these functions and I strongly advice users to avoid looping and recursive functions.
+> WARNING! Using any of these functions will send a request to GPT-3 for which you will be charged like any other request made by this module. As such please be careful implenting them in macros and other modules. Test your code well before implementing these functions and I strongly advice users to avoid looping and recursive functions.
 
 Functions to construct and send your own prompts are provided under `game.modules.get('ai-description-generator').api`:
-- `constructPrompt`: Construct and sends a prompt based on the provided context similar to how the base module does it.
+- `constructPrompt(language, system, world, entityType, subject, key)`: Construct and sends a prompt based on the provided context similar to how the base module does it.
+	- `language`: The language GPT-3 will be encouraged to respond in. Use `game.settings.get('ai-description-generator', 'language')` to use the language provided in the module's/core's settings.
 	- `system`: The RPG system to be used for context. Use `game.settings.get('ai-description-generator', 'system')` to use the system that was provided in the module's settings.
 	- `world`: The world/setting to be used for context. Use `game.settings.get('ai-description-generator', 'world')` to use the world that was provided in the module's settings.
 	- `entityType`: Either `creature`, `item`, or `spell`.
 	- `subject`: The name of the subject.
 	- `key`: Your API key. Use `game.settings.get('ai-description-generator', 'key')` to use the key that was provided in the module's settings.
-- `sendPrompt`: Sends a completely custom prompt.
+- `sendPrompt(prompt, key)`: Sends a completely custom prompt.
 	- `prompt`: The prompt you want to send.
 	- `key`: Your API key. Use `game.settings.get('ai-description-generator', 'key')` to use the key that was provided in the module's settings.
