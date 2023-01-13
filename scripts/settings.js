@@ -98,6 +98,7 @@ export function registerSettings() {
 		scope: 'world',
 		config: true,
 		type: Boolean,
-		default: false
+		default: false,
+		requiresReload: true
 	});
 }
