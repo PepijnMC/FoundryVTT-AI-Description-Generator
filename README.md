@@ -5,7 +5,7 @@
 # AI Description Generator
 > Although this module is completely free, the AI it uses is not. The module requires an API key obtained from https://beta.openai.com/account/api-keys and an OpenAI account with valid payment information. The pricing can be found at https://openai.com/api/pricing/, but on average you can expect each non-custom request made by this module to cost about $0.002 (2/10th of a single cent). It is advised to set a monthly usage limit if you are worried about costs, you can do so in your account settings here https://beta.openai.com/account/billing/limits.
 
-> This module does not require any credentials except for your API key, which is stored locally in your Foundry settings. All billing is done from your OpenAI account.
+> This module does not require any credentials except for your API key, which is stored locally in your Foundry settings. All billing is done from your OpenAI account. This key could be accessed by other programs and modules although they would have little reason to do so, nevertheless be careful and once again make sure to set a monthly limit to avoid unsuspected costs.
 
 GPT-3 is a text-based AI by [OpenAI](https://beta.openai.com/). This module provides a user-friendly implentation to communicate with its API from within your Foundry games to generate descriptions on the fly.
 
