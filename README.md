@@ -80,7 +80,7 @@ The module will never send a request to GPT-3 without being told to by pressing 
 ## API
 
 > WARNING
-> Using any of these functions will send a request to GPT-3 for which you will be charged like any other request made by this module. As such please be careful implenting them in macros and other modules. Test your code well before implementing these functions and I strongly advice to avoid any loops and recursions.
+> Using any of these functions will send a request to GPT-3 for which you will be charged like any other request made by this module. As such please be careful implenting them in macros and other modules. Test your code well before implementing these functions and I strongly advice users to avoid looping and recursive functions.
 
 Functions to construct and send your own prompts are provided under `game.modules.get('ai-description-generator').api`:
 - `constructPrompt`: Construct and sends a prompt based on the provided context similar to how the base module does it.
