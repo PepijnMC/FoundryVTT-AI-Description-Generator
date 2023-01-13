@@ -1,5 +1,24 @@
-export function constructPrompt(system, world, subjectType, subject, key) {
-	var prompt = `This is a tabletop roleplaying game using the ${system}`;
+export function constructPrompt(language, system, world, subjectType, subject, key) {
+	const foundryLanguages = {
+		"en": "English",
+		"fr": "French",
+		"es": "Español",
+		"ja": "日本語",
+		"pl": "Polish",
+		"ro": "Română",
+		"fi": "Suomi",
+		"de": "Deutsch",
+		"pt-BR": "Português (Brasil)",
+		"ko": "한국어",
+		"cn": "中文",
+		"zh-tw": "正體中文",
+		"cs": "Čeština",
+		"it": "Italiano",
+		"ca": "Catalan",
+		"pt-PT": "Português (Portugal)"
+	};
+	if (language == '') language = foundryLanguages[game.settings.get('core', 'language')];
+	var prompt = `Reply in ${language}. This is a tabletop roleplaying game using the ${system}`;
 	if (!system.toLowerCase().includes('system')) prompt += ' system';
 	if (world) prompt += ` and the ${world} setting`;
 	prompt += `. Give a cool short sensory description the game master can use for a ${subject}`;
