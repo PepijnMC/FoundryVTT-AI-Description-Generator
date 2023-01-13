@@ -72,7 +72,16 @@ All actors, items, and spells have a button added in their header for the GM to 
 
 ![A description generated for Fireball](https://github.com/PepijnMC/FoundryVTT-AI-Description-Generator/blob/main/media/Fireball%20Description.png?raw=true)
 
+## Issues and Requests
+Please report issues and propose feature requests <a href="https://github.com/PepijnMC/AI-Description-Generator/issues" target="_blank">here</a>.
+
+The module will never send a request to GPT-3 without being told to by pressing a button, using chat commands, or using the API in macros or other modules. Nevertheless if you ever suspect you are being charged for unprovoked requests from this module please disable the module immediately and raise a critical issue.
+
 ## API
+
+> WARNING
+> Using any of these functions will send a request to GPT-3 for which you will be charged like any other request made by this module. As such please be careful implenting them in macros and other modules. Test your code well before implementing these functions and I strongly advice to avoid any loops and recursions.
+
 Functions to construct and send your own prompts are provided under `game.modules.get('ai-description-generator').api`:
 - `constructPrompt`: Construct and sends a prompt based on the provided context similar to how the base module does it.
 	- `system`: The RPG system to be used for context. Use `game.settings.get('ai-description-generator', 'system')` to use the system that was provided in the module's settings.
