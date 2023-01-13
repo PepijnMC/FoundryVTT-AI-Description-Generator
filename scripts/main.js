@@ -15,7 +15,14 @@ Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
 		icon: 'fas fa-comment-dots',
 		class: 'gpt-actor-button',
 		onclick: () => {
-			constructPrompt(game.settings.get('ai-description-generator', 'system'), game.settings.get('ai-description-generator', 'world'), 'creature', sheet.object.name, game.settings.get('ai-description-generator', 'key'))
+			constructPrompt(
+				game.settings.get('ai-description-generator', 'language'),
+				game.settings.get('ai-description-generator', 'system'),
+				game.settings.get('ai-description-generator', 'world'),
+				'creature',
+				sheet.object.name,
+				game.settings.get('ai-description-generator', 'key')
+			);
 		}
 	})
 })
@@ -26,7 +33,14 @@ Hooks.on('getItemSheetHeaderButtons', (sheet, headerButtons) => {
 		icon: 'fas fa-comment-dots',
 		class: 'gpt-actor-button',
 		onclick: () => {
-			constructPrompt(game.settings.get('ai-description-generator', 'system'), game.settings.get('ai-description-generator', 'world'), sheet.object.type == 'spell' ? 'spell': 'item', sheet.object.name, game.settings.get('ai-description-generator', 'key'))
+			constructPrompt(
+				game.settings.get('ai-description-generator', 'language'),
+				game.settings.get('ai-description-generator', 'system'),
+				game.settings.get('ai-description-generator', 'world'),
+				sheet.object.type == 'spell' ? 'spell': 'item',
+				sheet.object.name,
+				game.settings.get('ai-description-generator', 'key')
+			);
 		}
 	})
 })

@@ -26,6 +26,15 @@ export function registerSettings() {
 		default: ''
 	});
 
+	game.settings.register('ai-description-generator', 'language', {
+		name: 'Language',
+		hint: 'The language you wish the model to reply in, quality may vary. Leave blank to use your FoundryVTT language setting.',
+		scope: 'world',
+		config: true,
+		type: String,
+		default: ''
+	});
+
 	game.settings.register('ai-description-generator', 'whisper', {
 		name: 'Whisper Response',
 		hint: 'When enabled will whisper the response only to you.',
@@ -81,5 +90,15 @@ export function registerSettings() {
 		type: Number,
 		range: {min: -2, max: 2, step: 0.1},
 		default: 0.0
+	});
+
+	game.settings.register('ai-description-generator', 'api', {
+		name: 'Enable API Functions',
+		hint: 'Exposes functions to construct and send prompts in macros or other modules.',
+		scope: 'world',
+		config: true,
+		type: Boolean,
+		default: false,
+		requiresReload: true
 	});
 }

@@ -1,5 +1,38 @@
-export function constructPrompt(system, world, subjectType, subject, key) {
-	var prompt = `This is a tabletop roleplaying game using the ${system}`;
+export function constructPrompt(language, system, world, subjectType, subject, key) {
+	var prompt = ''
+	const foundryLanguages = {
+		"en": "English",
+		"fr": "French",
+		"es": "Español",
+		"ja": "日本語",
+		"pl": "Polish",
+		"ro": "Română",
+		"fi": "Suomi",
+		"de": "Deutsch",
+		"pt-BR": "Português (Brasil)",
+		"ko": "한국어",
+		"cn": "中文",
+		"zh-tw": "正體中文",
+		"cs": "Čeština",
+		"it": "Italiano",
+		"ca": "Catalan",
+		"pt-PT": "Português (Portugal)"
+	};
+	//English languages to filter out. Since GPT-3 will reply in English by default this filtering reduces the amount of tokens sent.
+	const englishLanguages = [
+		'english',
+		'british',
+		'en',
+		'uk',
+		'american',
+		'us',
+		'australian',
+		'aus'
+	];
+
+	if (language == '') language = foundryLanguages[game.settings.get('core', 'language')];
+	if (!englishLanguages.includes(language.toLowerCase())) prompt += `Reply in ${language}. `
+	prompt += `This is a tabletop roleplaying game using the ${system}`;
 	if (!system.toLowerCase().includes('system')) prompt += ' system';
 	if (world) prompt += ` and the ${world} setting`;
 	prompt += `. Give a cool short sensory description the game master can use for a ${subject}`;
@@ -10,11 +43,11 @@ export function constructPrompt(system, world, subjectType, subject, key) {
 			prompt += ` ${subjectType}`;
 	}
 	prompt += '.';
-	console.log(`AI Description Generator | Sending the following prompt to GPT-3: ${prompt}`);
 	return sendPrompt(prompt, key)
 }
 
 export function sendPrompt(prompt, key) {
+	console.log(`AI Description Generator | Sending the following prompt to GPT-3: ${prompt}`);
 	var response = '';
 	var oHttp = new XMLHttpRequest();
 	oHttp.open("POST", "https://api.openai.com/v1/completions");
