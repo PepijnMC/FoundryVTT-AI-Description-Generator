@@ -53,6 +53,15 @@ export function registerSettings() {
 		default: 'GPT-3'
 	});
 
+	game.settings.register('ai-description-generator', 'prompt', {
+		name: 'AI Prompt',
+		hint: 'The prompt that is used to contruct a request for GPT-3. Only alter this if you are dissatified with the results and know what you are doing!',
+		scope: 'world',
+		config: true,
+		type: String,
+		default: 'Reply in {language}. This is a tabletop roleplaying game using the {system} system and the {world} setting. Give a cool short sensory description the game master can use for a {subject} {subjectType}.'
+	});
+
 	game.settings.register('ai-description-generator', 'max_tokens', {
 		name: 'AI Max Tokens',
 		hint: 'The maximum amount of tokens the AI can use per request.',
@@ -90,6 +99,16 @@ export function registerSettings() {
 		type: Number,
 		range: {min: -2, max: 2, step: 0.1},
 		default: 0.0
+	});
+
+	game.settings.register('ai-description-generator', 'model', {
+		name: 'AI Model',
+		hint: 'GPT-3 offers 4 main models, davanci-003 being the latest. This setting should not be changed if you do not know what this means.',
+		scope: 'world',
+		config: true,
+		type: String,
+		default: 'text-davinci-003',
+		choices: { 'text-davinci-003': 'text-davinci-003', 'text-curie-001': 'text-curie-001', 'text-babbage-001': 'text-babbage-001', 'text-ada-001': 'text-ada-001' }
 	});
 
 	game.settings.register('ai-description-generator', 'api', {

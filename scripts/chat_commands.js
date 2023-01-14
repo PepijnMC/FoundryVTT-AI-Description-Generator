@@ -27,8 +27,8 @@ export function addChatCommands(log, data, chatData) {
 			game.settings.get('ai-description-generator', 'language'),
 			game.settings.get('ai-description-generator', 'system'),
 			game.settings.get('ai-description-generator', 'world'),
-			subjectType,
 			subject,
+			subjectType,
 			game.settings.get('ai-description-generator', 'key')
 		);
 		return false;
