@@ -93,7 +93,7 @@ The module will never send a request to GPT-3 without being told to by pressing 
 > WARNING! Using any of these functions will send a request to GPT-3 for which you will be charged like any other request made by this module. As such please be careful implenting them in macros and other modules. Test your code well before implementing these functions and I strongly advice users to avoid looping and recursive functions.
 
 Functions to construct and send your own prompts are provided under `game.modules.get('ai-description-generator').api`:
-- `constructPrompt(language, system, world, entityType, subject, key)`: Construct and sends a prompt based on the provided context similar to how the base module does it.
+- `constructPrompt(language, system, world, subject, subjectType, key)`: Construct and sends a prompt based on the provided context similar to how the base module does it.
 	- `language`: The language GPT-3 will be encouraged to respond in. Use `game.settings.get('ai-description-generator', 'language')` to use the language provided in the module's/core's settings.
 	- `system`: The RPG system to be used for context. Use `game.settings.get('ai-description-generator', 'system')` to use the system that was provided in the module's settings.
 	- `world`: The world/setting to be used for context. Use `game.settings.get('ai-description-generator', 'world')` to use the world that was provided in the module's settings.
