@@ -97,8 +97,8 @@ Functions to construct and send your own prompts are provided under `game.module
 	- `language`: The language GPT-3 will be encouraged to respond in. Use `game.settings.get('ai-description-generator', 'language')` to use the language provided in the module's/core's settings.
 	- `system`: The RPG system to be used for context. Use `game.settings.get('ai-description-generator', 'system')` to use the system that was provided in the module's settings.
 	- `world`: The world/setting to be used for context. Use `game.settings.get('ai-description-generator', 'world')` to use the world that was provided in the module's settings.
-	- `entityType`: Either `creature`, `item`, or `spell`.
 	- `subject`: The name of the subject.
+	- `subjectType`: Additional information about the nature of the `subject`, like `creature` or `spell`.
 	- `key`: Your API key. Use `game.settings.get('ai-description-generator', 'key')` to use the key that was provided in the module's settings.
 - `sendPrompt(prompt, key)`: Sends a completely custom prompt.
 	- `prompt`: The prompt you want to send.
