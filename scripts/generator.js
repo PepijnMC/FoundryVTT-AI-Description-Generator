@@ -1,5 +1,6 @@
-export function constructPrompt(language, system, world, subjectType, subject, key) {
-	var prompt = ''
+//Construct a prompt based on the given parameters.
+export function constructPrompt(language, system, world, subject, subjectType, key) {
+	//A mapping for Foundry's languages since only the key is stored but the value is needed.
 	const foundryLanguages = {
 		"en": "English",
 		"fr": "French",
@@ -30,31 +31,47 @@ export function constructPrompt(language, system, world, subjectType, subject, k
 		'aus'
 	];
 
-	if (language == '') language = foundryLanguages[game.settings.get('core', 'language')];
-	if (!englishLanguages.includes(language.toLowerCase())) prompt += `Reply in ${language}. `
-	prompt += `This is a tabletop roleplaying game using the ${system}`;
-	if (!system.toLowerCase().includes('system')) prompt += ' system';
-	if (world) prompt += ` and the ${world} setting`;
-	prompt += `. Give a cool short sensory description the game master can use for a ${subject}`;
-	switch (subjectType.toLowerCase()) {
-		case 'creature':
-		case 'item':
-		case 'spell':
-			prompt += ` ${subjectType}`;
+	const defaultPrompt = 'Reply in {language}. This is a tabletop roleplaying game using the {system} system and the {world} setting. Give a cool short sensory description the game master can use for a {subject} {subjectType}.';
+	var prompt = game.settings.get('ai-description-generator', 'prompt');
+	if (prompt === defaultPrompt) {
+		//If the module's language setting is left blank use the core language setting instead.
+		if (language == '') language = foundryLanguages[game.settings.get('core', 'language')];
+		//Remove the language request from the prompt for English languages.
+		if (englishLanguages.includes(language.toLowerCase())) prompt = prompt.replace('Reply in {language}. ', '');
+		//If the system name already includes the word 'system' remove it from the prompt.
+		if (system.toLowerCase().includes('system')) prompt = prompt.replace(' system ', ' ');
+		//If no world is given remove it from the prompt.
+		if (world == '') prompt = prompt.replace(' and the {world} setting', '');
+		//If no subject type is given remove it from the prompt.
+		if (subjectType == '') prompt = prompt.replace(' {subjectType}', '');
 	}
-	prompt += '.';
+	var prompt_mapping = {
+		'{language}': language,
+		'{system}': system,
+		'{world}': world,
+		'{subject}': subject,
+		'{subjectType}': subjectType
+	};
+	for (const [key, value] of Object.entries(prompt_mapping)) {
+		prompt = prompt.replace(key, value);
+	}
+	//Send the prompt.
 	return sendPrompt(prompt, key)
 }
 
+//Send a prompt the GPT-3.
 export function sendPrompt(prompt, key) {
 	console.log(`AI Description Generator | Sending the following prompt to GPT-3: ${prompt}`);
 	var response = '';
+
+	//Setup a http request to OpenAI's API using the provided key.
 	var oHttp = new XMLHttpRequest();
 	oHttp.open("POST", "https://api.openai.com/v1/completions");
 	oHttp.setRequestHeader("Accept", "application/json");
 	oHttp.setRequestHeader("Content-Type", "application/json");
 	oHttp.setRequestHeader("Authorization", 'Bearer ' + key);
 
+	//Add a listener to the request to catch its response.
 	oHttp.onreadystatechange = function () {
 		if (oHttp.readyState === 4) {
 			var oJson = {}
@@ -81,8 +98,9 @@ export function sendPrompt(prompt, key) {
 		}
 	};
 
+	//The data to send including the prompt.
 	var data = {
-		model: 'text-davinci-003',
+		model: game.settings.get('ai-description-generator', 'model'),
 		prompt: prompt,
 		max_tokens: game.settings.get('ai-description-generator', 'max_tokens'),
 		user: '1',
@@ -92,5 +110,6 @@ export function sendPrompt(prompt, key) {
 		stop: ["#", ";"] //Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.
 	};
 
+	//Send the data.
 	oHttp.send(JSON.stringify(data));
 }

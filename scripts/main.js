@@ -3,11 +3,13 @@ import { registerAPI } from './api.js';
 import { constructPrompt } from './generator.js';
 import { addChatCommands } from './chat_commands.js';
 
+//Register the settings and api function when Foundry is ready.
 Hooks.once('init', () => {
 	registerSettings();
 	registerAPI();
 })
 
+//Add a new button to the header of the actor sheet.
 Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
 	if (!game.user.isGM) return;
 	headerButtons.unshift({
@@ -19,14 +21,15 @@ Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
 				game.settings.get('ai-description-generator', 'language'),
 				game.settings.get('ai-description-generator', 'system'),
 				game.settings.get('ai-description-generator', 'world'),
-				'creature',
 				sheet.object.name,
+				'creature',
 				game.settings.get('ai-description-generator', 'key')
 			);
 		}
 	})
 })
 
+//Add a new button the the header of the itme sheet. Spells are also considered items.
 Hooks.on('getItemSheetHeaderButtons', (sheet, headerButtons) => {
 	headerButtons.unshift({
 		label: 'GPT-3',
@@ -37,8 +40,8 @@ Hooks.on('getItemSheetHeaderButtons', (sheet, headerButtons) => {
 				game.settings.get('ai-description-generator', 'language'),
 				game.settings.get('ai-description-generator', 'system'),
 				game.settings.get('ai-description-generator', 'world'),
-				sheet.object.type == 'spell' ? 'spell': 'item',
 				sheet.object.name,
+				sheet.object.type == 'spell' ? 'spell': 'item',
 				game.settings.get('ai-description-generator', 'key')
 			);
 		}
