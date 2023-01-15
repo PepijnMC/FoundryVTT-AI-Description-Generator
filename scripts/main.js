@@ -31,21 +31,44 @@ Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
 
 //Add a new button the the header of the itme sheet. Spells are also considered items.
 Hooks.on('getItemSheetHeaderButtons', (sheet, headerButtons) => {
-	headerButtons.unshift({
-		label: 'GPT-3',
-		icon: 'fas fa-comment-dots',
-		class: 'gpt-actor-button',
-		onclick: () => {
-			constructPrompt(
-				game.settings.get('ai-description-generator', 'language'),
-				game.settings.get('ai-description-generator', 'system'),
-				game.settings.get('ai-description-generator', 'world'),
-				sheet.object.name,
-				sheet.object.type == 'spell' ? 'spell': 'item',
-				game.settings.get('ai-description-generator', 'key')
-			);
+	const actor = sheet?.actor
+	var actorContext = ''
+	if (actor) {
+		switch (actor.type) {
+			case 'character':
+				actorContext = ' from a player character';
+				break;
+			case 'npc':
+				actorContext = ` from a ${actor.name} creature`;
+				break;
+			case 'vehicle':
+				actorContext = ` from a ${actor.name} vehicle`;
+				break;
+			case 'group':
+				actorContext = ` from a group of ${actor.name}`;
+				break;
 		}
-	})
+	}
+	const subjectTypeMapping = {'item': 'item', 'weapon': `attack${actorContext}`, 'spell': `spell${actorContext}`, 'feat': `feature${actorContext}`};
+	var subjectType = sheet.object.type;
+	if (subjectType in subjectTypeMapping) {
+		headerButtons.unshift({
+			label: 'GPT-3',
+			icon: 'fas fa-comment-dots',
+			class: 'gpt-actor-button',
+			onclick: () => {
+				constructPrompt(
+					game.settings.get('ai-description-generator', 'language'),
+					game.settings.get('ai-description-generator', 'system'),
+					game.settings.get('ai-description-generator', 'world'),
+					sheet.object.name,
+					subjectTypeMapping[subjectType],
+					game.settings.get('ai-description-generator', 'key')
+				);
+			}
+		})
+	}
+	
 })
 
 Hooks.on('chatMessage', addChatCommands);
