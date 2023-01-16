@@ -6,8 +6,11 @@ import { addChatCommands } from './chat_commands.js';
 //Register the settings and api function when Foundry is ready.
 Hooks.once('init', () => {
 	registerSettings();
+});
+
+Hooks.once('ready', () => {
 	registerAPI();
-})
+});
 
 //Add a new button to the header of the actor sheet.
 Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
