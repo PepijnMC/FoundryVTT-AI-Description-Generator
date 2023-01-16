@@ -62,6 +62,14 @@ export function constructPrompt(language, system, world, subject, subjectType, k
 
 //Send a prompt the GPT-3.
 export function sendPrompt(prompt, key) {
+	const speaker = game.settings.get('ai-description-generator', 'ai_name')
+
+	if (game.settings.get('ai-description-generator', 'debug')) {
+		const message = {user: game.user, speaker: {alias: `${speaker} (Debug)`}, content: prompt}
+		if (game.settings.get('ai-description-generator', 'whisper')) message['whisper'] = [game.userId]
+		ChatMessage.create(message);
+		return;
+	}
 	console.log(`AI Description Generator | Sending the following prompt to GPT-3: ${prompt}`);
 	var response = '';
 
@@ -92,10 +100,9 @@ export function sendPrompt(prompt, key) {
 				if (s == "") s = "No response";
 				response += s;
 			}
-			const speaker = game.settings.get('ai-description-generator', 'ai_name')
 			const message = {user: game.user, speaker: {alias: speaker}, content: response}
 			if (game.settings.get('ai-description-generator', 'whisper')) message['whisper'] = [game.userId]
-			ChatMessage.create(message);        
+			ChatMessage.create(message);
 		}
 	};
 
