@@ -6,8 +6,11 @@ import { addChatCommands } from './chat_commands.js';
 //Register the settings and api function when Foundry is ready.
 Hooks.once('init', () => {
 	registerSettings();
+});
+
+Hooks.once('ready', () => {
 	registerAPI();
-})
+});
 
 //Add a new button to the header of the actor sheet.
 Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
@@ -35,6 +38,7 @@ Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
 
 //Add a new button the the header of the itme sheet. Spells are also considered items.
 Hooks.on('getItemSheetHeaderButtons', (sheet, headerButtons) => {
+	if (!game.user.isGM) return;
 	const actor = sheet?.actor
 	var actorContext = ''
 	if (actor) {
