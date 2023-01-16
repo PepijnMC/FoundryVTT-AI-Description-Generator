@@ -120,4 +120,13 @@ export function registerSettings() {
 		default: false,
 		requiresReload: true
 	});
+
+	game.settings.register('ai-description-generator', 'debug', {
+		name: 'Debug Mode',
+		hint: 'When enabled the module will send prompts to chat and prevents them from being sent to GPT-3. Useful for testing and debugging.',
+		scope: 'world',
+		config: true,
+		type: Boolean,
+		default: false
+	});
 }
