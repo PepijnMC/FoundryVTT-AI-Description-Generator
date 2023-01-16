@@ -55,10 +55,9 @@ export function constructPrompt(language, system, world, subject, subjectType, k
 	for (const [key, value] of Object.entries(prompt_mapping)) {
 		prompt = prompt.replace(key, value);
 	}
-	console.log(prompt);
 
 	//Send the prompt.
-	//sendPrompt(prompt, key)
+	sendPrompt(prompt, key)
 }
 
 //Send a prompt the GPT-3.
