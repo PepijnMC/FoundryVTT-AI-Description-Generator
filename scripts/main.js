@@ -6,12 +6,19 @@ import { addChatCommands } from './chat_commands.js';
 //Register the settings and api function when Foundry is ready.
 Hooks.once('init', () => {
 	registerSettings();
+});
+
+Hooks.once('ready', () => {
 	registerAPI();
-})
+});
 
 //Add a new button to the header of the actor sheet.
 Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
 	if (!game.user.isGM) return;
+	const actorType = sheet.object.type;
+	if (actorType === 'character') return;
+	const subjectTypeMapping = {'npc': 'creature', 'vehicle': 'vehicle', 'group': 'group'};
+
 	headerButtons.unshift({
 		label: 'GPT-3',
 		icon: 'fas fa-comment-dots',
@@ -22,15 +29,16 @@ Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
 				game.settings.get('ai-description-generator', 'system'),
 				game.settings.get('ai-description-generator', 'world'),
 				sheet.object.name,
-				'creature',
+				subjectTypeMapping[actorType],
 				game.settings.get('ai-description-generator', 'key')
 			);
 		}
 	})
-})
+});
 
 //Add a new button the the header of the itme sheet. Spells are also considered items.
 Hooks.on('getItemSheetHeaderButtons', (sheet, headerButtons) => {
+	if (!game.user.isGM) return;
 	const actor = sheet?.actor
 	var actorContext = ''
 	if (actor) {
@@ -69,6 +77,6 @@ Hooks.on('getItemSheetHeaderButtons', (sheet, headerButtons) => {
 		})
 	}
 	
-})
+});
 
 Hooks.on('chatMessage', addChatCommands);
