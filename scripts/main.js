@@ -15,6 +15,8 @@ Hooks.once('ready', () => {
 //Add a new button to the header of the actor sheet.
 Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
 	if (!game.user.isGM) return;
+	const actorType = sheet.object.type;
+	if (actorType === 'character') return;
 	headerButtons.unshift({
 		label: 'GPT-3',
 		icon: 'fas fa-comment-dots',
@@ -34,6 +36,7 @@ Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
 
 //Add a new button the the header of the itme sheet. Spells are also considered items.
 Hooks.on('getItemSheetHeaderButtons', (sheet, headerButtons) => {
+	if (!game.user.isGM) return;
 	const actor = sheet?.actor
 	var actorContext = ''
 	if (actor) {
