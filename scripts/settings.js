@@ -134,7 +134,7 @@ export function registerSettings() {
 		name: 'Migration Version',
 		hint: 'Internal versioning to help with data migration during updates',
 		scope: 'world',
-		config: true,
+		config: false,
 		type: Number,
 		default: 150
 	});
