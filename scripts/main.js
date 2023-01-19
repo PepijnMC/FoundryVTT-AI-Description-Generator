@@ -16,7 +16,7 @@ Hooks.once('ready', () => {
 
 //Add a new button to the header of the actor sheet.
 Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
-	if (!game.user.isGM) return;
+	if (game.user.role < game.settings.get('ai-description-generator', 'button_permission')) return;
 	const actor = sheet.object;
 	const actorType = actor.type;
 	if (actorType === 'character') {
@@ -66,13 +66,15 @@ Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
 
 //Add a new button the the header of the itme sheet. Spells are also considered items.
 Hooks.on('getItemSheetHeaderButtons', (sheet, headerButtons) => {
-	if (!game.user.isGM) return;
+	if (game.user.role < game.settings.get('ai-description-generator', 'button_permission')) return;
 	const actor = sheet?.actor
 	var actorContext = ''
 	if (actor) {
 		switch (actor.type) {
 			case 'character':
-				actorContext = ' from a player character';
+				const actorData = actor.getRollData();
+				const actorClasses = Object.keys(actorData.classes).join('/');
+				actorContext = ` from a ${actorClasses}`;
 				break;
 			case 'npc':
 				actorContext = ` from a ${actor.name} creature`;
@@ -85,7 +87,7 @@ Hooks.on('getItemSheetHeaderButtons', (sheet, headerButtons) => {
 				break;
 		}
 	}
-	const subjectTypeMapping = {'item': 'item', 'weapon': `attack${actorContext}`, 'spell': `spell${actorContext}`, 'feat': `feature${actorContext}`};
+	const subjectTypeMapping = {'backpack': 'container', 'consumable': 'item', 'equipment': 'item', 'feat': `feature${actorContext}`, 'loot': 'item', 'spell': `spell${actorContext}`, 'tool': 'tool', 'weapon': `attack${actorContext}`};
 	var subjectType = sheet.object.type;
 	if (subjectType in subjectTypeMapping) {
 		headerButtons.unshift({
@@ -104,7 +106,6 @@ Hooks.on('getItemSheetHeaderButtons', (sheet, headerButtons) => {
 			}
 		})
 	}
-	
 });
 
 Hooks.on('chatMessage', addChatCommands);

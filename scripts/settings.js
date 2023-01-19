@@ -51,17 +51,19 @@ export function registerSettings() {
 		config: true,
 		type: Number,
 		default: 4,
-		choices: {1: "Player", 2: "Trusted", 3: "Assistant", 4: "Game Master"}
+		choices: {1: "Player", 2: "Trusted", 3: "Assistant", 4: "Game Master"},
+		requiresReload: true
 	});
 
-	game.settings.register('ai-description-generator', 'chat_permission', {
+	game.settings.register('ai-description-generator', 'command_permission', {
 		name: 'Minimum Command Permission',
 		hint: 'The minimum permission level to use the module\'s chat commands.',
 		scope: 'world',
 		config: true,
 		type: Number,
 		default: 4,
-		choices: {1: "Player", 2: "Trusted", 3: "Assistant", 4: "Game Master"}
+		choices: {1: "Player", 2: "Trusted", 3: "Assistant", 4: "Game Master"},
+		requiresReload: true
 	});
 	
 	game.settings.register('ai-description-generator', 'api_permission', {
@@ -71,7 +73,8 @@ export function registerSettings() {
 		config: true,
 		type: Number,
 		default: 4,
-		choices: {1: "Player", 2: "Trusted", 3: "Assistant", 4: "Game Master"}
+		choices: {1: "Player", 2: "Trusted", 3: "Assistant", 4: "Game Master"},
+		requiresReload: true
 	});
 
 	game.settings.register('ai-description-generator', 'ai_name', {
