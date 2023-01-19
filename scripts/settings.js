@@ -59,7 +59,7 @@ export function registerSettings() {
 		scope: 'world',
 		config: true,
 		type: String,
-		default: 'Reply in {language}. This is a tabletop roleplaying game using the {system} system and the {world} setting. Give a cool short sensory description the game master can use for a {subject} {subjectType}.'
+		default: 'Reply in {language}. This is a tabletop roleplaying game using the {system} system and the {world} setting. Give a {descriptionType} description the game master can use for a {subject} {subjectType}.'
 	});
 
 	game.settings.register('ai-description-generator', 'max_tokens', {
@@ -128,5 +128,14 @@ export function registerSettings() {
 		config: true,
 		type: Boolean,
 		default: false
+	});
+
+	game.settings.register('ai-description-generator', 'migration_version', {
+		name: 'Migration Version',
+		hint: 'Internal versioning to help with data migration during updates',
+		scope: 'world',
+		config: true,
+		type: Number,
+		default: 150
 	});
 }
