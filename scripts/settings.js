@@ -44,6 +44,36 @@ export function registerSettings() {
 		default: false
 	});
 
+	game.settings.register('ai-description-generator', 'button_permission', {
+		name: 'Minimum Button Permission',
+		hint: 'The minimum permission level to see and use the module\'s sheet buttons of owned Actors.',
+		scope: 'world',
+		config: true,
+		type: Number,
+		default: 4,
+		choices: {1: "Player", 2: "Trusted", 3: "Assistant", 4: "Game Master"}
+	});
+
+	game.settings.register('ai-description-generator', 'chat_permission', {
+		name: 'Minimum Command Permission',
+		hint: 'The minimum permission level to use the module\'s chat commands.',
+		scope: 'world',
+		config: true,
+		type: Number,
+		default: 4,
+		choices: {1: "Player", 2: "Trusted", 3: "Assistant", 4: "Game Master"}
+	});
+	
+	game.settings.register('ai-description-generator', 'api_permission', {
+		name: 'Minimum API Permission',
+		hint: 'The minimum permission level to use the module\'s API functions.',
+		scope: 'world',
+		config: true,
+		type: Number,
+		default: 4,
+		choices: {1: "Player", 2: "Trusted", 3: "Assistant", 4: "Game Master"}
+	});
+
 	game.settings.register('ai-description-generator', 'ai_name', {
 		name: 'AI Name',
 		hint: 'The name of the AI to be used for its chat messages.',
