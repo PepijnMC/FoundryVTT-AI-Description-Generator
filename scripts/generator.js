@@ -64,7 +64,7 @@ export function constructPrompt(language, system, world, subject, subjectType=''
 }
 
 //Send a prompt the GPT-3.
-export function sendPrompt(prompt, key) {
+export function sendPrompt(prompt, key=game.settings.get('ai-description-generator', 'key')) {
 	const speaker = game.settings.get('ai-description-generator', 'ai_name')
 
 	if (game.settings.get('ai-description-generator', 'debug')) {
