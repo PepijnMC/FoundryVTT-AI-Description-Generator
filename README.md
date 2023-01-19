@@ -23,12 +23,12 @@ If you want to have some fun, try out `Pirate Speech`.
 There are two new commands available to the GM to send prompts to GPT-3.
 
 ```
-/gpt construct (subject) [subjectType]
+/gpt construct (subject)
 ```
 - Constructs and sends a prompt similar to the Description Generator.
-- The prompt is based on your settings, the provided `subject`, and optionally a `subjectType` (either `creature`, `item`, or `spell`).
+- The prompt is based on your settings and the provided `subject`.
 - Examples:
-  - `/gpt construct Ancient White Dragon creature`
+  - `/gpt construct Ancient White Dragon`
   - `/gpt construct Beholder`
   - `/gpt construct Fireball spell`
 
@@ -98,8 +98,9 @@ Functions to construct and send your own prompts are provided under `game.module
 	- `system`: The RPG system to be used for context. Use `game.settings.get('ai-description-generator', 'system')` to use the system that was provided in the module's settings.
 	- `world`: The world/setting to be used for context. Use `game.settings.get('ai-description-generator', 'world')` to use the world that was provided in the module's settings.
 	- `subject`: The name of the subject.
-	- `subjectType`: Additional information about the nature of the `subject`, like `creature` or `spell`.
-	- `key`: Your API key. Use `game.settings.get('ai-description-generator', 'key')` to use the key that was provided in the module's settings.
+	- `subjectType` (optional): Additional information about the nature of the `subject`, like `creature` or `spell`. Defaults to nothing.
+	- `descriptionType` (optional): Additional information about what sort of description you want. Defaults to nothing but the module uses either `cool short sensory` or `cool short visual`.
+	- `key` (optional): Your API key. Defaults to the API key provided by you in the module's settings.
 - `sendPrompt(prompt, key)`: Sends a completely custom prompt.
 	- `prompt`: The prompt you want to send.
-	- `key`: Your API key. Use `game.settings.get('ai-description-generator', 'key')` to use the key that was provided in the module's settings.
+	- `key` (optional): Your API key. Defaults to the API key provided by you in the module's settings.
