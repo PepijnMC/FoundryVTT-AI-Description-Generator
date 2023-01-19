@@ -28,8 +28,7 @@ export function addChatCommands(log, data, chatData) {
 		const prompt = data.split(' ').slice(2, this.length).join(' ');
 		if (prompt === '') return;
 		sendPrompt(
-			prompt,
-			game.settings.get('ai-description-generator', 'key')
+			prompt
 		);
 		return false;
 	}
