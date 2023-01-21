@@ -1,5 +1,5 @@
 //Construct a prompt based on the given parameters.
-export function constructPrompt(language, system, world, subject, subjectType, key) {
+export function constructPrompt(language, system, world, subject, subjectType='', descriptionType='', key=game.settings.get('ai-description-generator', 'key')) {
 	//A mapping for Foundry's languages since only the key is stored but the value is needed.
 	const foundryLanguages = {
 		"en": "English",
@@ -31,7 +31,7 @@ export function constructPrompt(language, system, world, subject, subjectType, k
 		'aus'
 	];
 
-	const defaultPrompt = 'Reply in {language}. This is a tabletop roleplaying game using the {system} system and the {world} setting. Give a cool short sensory description the game master can use for a {subject} {subjectType}.';
+	const defaultPrompt = 'Reply in {language}. This is a tabletop roleplaying game using the {system} system and the {world} setting. Give a {descriptionType} description the game master can use for a {subject} {subjectType}.';
 	var prompt = game.settings.get('ai-description-generator', 'prompt');
 	if (prompt === defaultPrompt) {
 		//If the module's language setting is left blank use the core language setting instead.
@@ -44,13 +44,16 @@ export function constructPrompt(language, system, world, subject, subjectType, k
 		if (world == '') prompt = prompt.replace(' and the {world} setting', '');
 		//If no subject type is given remove it from the prompt.
 		if (subjectType == '') prompt = prompt.replace(' {subjectType}', '');
+		//If no description type is given remove it from the prompt.
+		if (descriptionType == '') prompt = prompt.replace(' {descriptionType}', '');
 	}
 	var prompt_mapping = {
 		'{language}': language,
 		'{system}': system,
 		'{world}': world,
 		'{subject}': subject,
-		'{subjectType}': subjectType
+		'{subjectType}': subjectType,
+		'{descriptionType}': descriptionType
 	};
 	for (const [key, value] of Object.entries(prompt_mapping)) {
 		prompt = prompt.replace(key, value);
@@ -61,7 +64,7 @@ export function constructPrompt(language, system, world, subject, subjectType, k
 }
 
 //Send a prompt the GPT-3.
-export function sendPrompt(prompt, key) {
+export function sendPrompt(prompt, key=game.settings.get('ai-description-generator', 'key')) {
 	const speaker = game.settings.get('ai-description-generator', 'ai_name')
 
 	if (game.settings.get('ai-description-generator', 'debug')) {

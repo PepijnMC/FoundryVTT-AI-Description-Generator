@@ -44,6 +44,39 @@ export function registerSettings() {
 		default: false
 	});
 
+	game.settings.register('ai-description-generator', 'button_permission', {
+		name: 'Minimum Button Permission',
+		hint: 'The minimum permission level to see and use the module\'s sheet buttons of owned Actors.',
+		scope: 'world',
+		config: true,
+		type: Number,
+		default: 4,
+		choices: {1: "Player", 2: "Trusted", 3: "Assistant", 4: "Game Master"},
+		requiresReload: true
+	});
+
+	game.settings.register('ai-description-generator', 'command_permission', {
+		name: 'Minimum Command Permission',
+		hint: 'The minimum permission level to use the module\'s chat commands.',
+		scope: 'world',
+		config: true,
+		type: Number,
+		default: 4,
+		choices: {1: "Player", 2: "Trusted", 3: "Assistant", 4: "Game Master"},
+		requiresReload: true
+	});
+	
+	game.settings.register('ai-description-generator', 'api_permission', {
+		name: 'Minimum API Permission',
+		hint: 'The minimum permission level to use the module\'s API functions.',
+		scope: 'world',
+		config: true,
+		type: Number,
+		default: 4,
+		choices: {1: "Player", 2: "Trusted", 3: "Assistant", 4: "Game Master"},
+		requiresReload: true
+	});
+
 	game.settings.register('ai-description-generator', 'ai_name', {
 		name: 'AI Name',
 		hint: 'The name of the AI to be used for its chat messages.',
@@ -59,7 +92,7 @@ export function registerSettings() {
 		scope: 'world',
 		config: true,
 		type: String,
-		default: 'Reply in {language}. This is a tabletop roleplaying game using the {system} system and the {world} setting. Give a cool short sensory description the game master can use for a {subject} {subjectType}.'
+		default: 'Reply in {language}. This is a tabletop roleplaying game using the {system} system and the {world} setting. Give a {descriptionType} description the game master can use for a {subject} {subjectType}.'
 	});
 
 	game.settings.register('ai-description-generator', 'max_tokens', {
@@ -128,5 +161,14 @@ export function registerSettings() {
 		config: true,
 		type: Boolean,
 		default: false
+	});
+
+	game.settings.register('ai-description-generator', 'migration_version', {
+		name: 'Migration Version',
+		hint: 'Internal versioning to help with data migration during updates',
+		scope: 'world',
+		config: false,
+		type: Number,
+		default: 150
 	});
 }
