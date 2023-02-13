@@ -1,8 +1,8 @@
-![Latest Release Download Count](https://img.shields.io/github/downloads/PepijnMC/FoundryVTT-AI-Description-Generator/latest/module.zip?color=2b82fc&label=latest%20release%20downloads&style=for-the-badge)
 ![Foundry Core Compatible Version](https://img.shields.io/badge/dynamic/json.svg?url=https%3A%2F%2Fgithub.com%2FPepijnMC%2FFoundryVTT-AI-Description-Generator%2Freleases%2Flatest%2Fdownload%2Fmodule.json&label=Foundry%20Version&query=$.compatibility.verified&colorB=orange&style=for-the-badge)
-<a href='https://ko-fi.com/pepijn' target='_blank'><img src='https://img.shields.io/badge/Donate-Buy%20me%20a%20coffee-red?style=for-the-badge' alt='Buy Me a Coffee at ko-fi.com' />
 
-# AI Description Generator
+# AI Description Generator - SWN Compatible Fork
+This module is a fork of PepijnMC's work that makes it compatible with the official Stars Without Number: Revised FoundryVTT System. 
+
 > Although this module is completely free, the AI it uses is not. The module requires an API key obtained from https://beta.openai.com/account/api-keys and an OpenAI account with valid payment information. The pricing can be found at https://openai.com/api/pricing/, but on average you can expect each non-custom request made by this module to cost about $0.002 (2/10th of a single cent). It is advised to set a monthly usage limit if you are worried about costs, you can do so in your account settings here https://beta.openai.com/account/billing/limits.
 
 > This module does not require any credentials except for your API key, which is stored locally in your Foundry settings. All billing is done from your OpenAI account. This key could be accessed by other programs and modules although they would have little reason to do so, nevertheless be careful and once again make sure to set a monthly limit to avoid unsuspected costs.
