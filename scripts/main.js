@@ -21,9 +21,9 @@ Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
 	const actorType = actor.type;
 	if (actorType === 'character') {
 		const actorData = actor.getRollData();
-		const lineageContext = actorData.details.race;
-		const classContext = Object.keys(actorData.classes).join('/');
-		const appearanceContext = actorData.details.appearance;
+		const lineageContext = actorData.species;
+		const classContext = actorData.class;
+		const appearanceContext = actorData.biography;
 		
 		const subject = `${lineageContext} ${classContext} player character`;
 		const subjectContext = `who is/has ${appearanceContext}`;
@@ -37,6 +37,27 @@ Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
 					game.settings.get('ai-description-generator', 'system'),
 					game.settings.get('ai-description-generator', 'world'),
 					subject,
+					subjectContext,
+					'cool short visual'
+				);
+			}
+		});
+	}
+	else if (actorType === 'npc') {
+		const actorData = actor.getRollData();
+		const appearanceContext = actorData.notes.right.content;
+		
+		const subjectContext = `that is/has ${appearanceContext}`;
+		headerButtons.unshift({
+			label: 'GPT-3',
+			icon: 'fas fa-comment-dots',
+			class: 'gpt-actor-button',
+			onclick: () => {
+				constructPrompt(
+					game.settings.get('ai-description-generator', 'language'),
+					game.settings.get('ai-description-generator', 'system'),
+					game.settings.get('ai-description-generator', 'world'),
+					actor.name,
 					subjectContext,
 					'cool short visual'
 				);
@@ -73,11 +94,11 @@ Hooks.on('getItemSheetHeaderButtons', (sheet, headerButtons) => {
 		switch (actor.type) {
 			case 'character':
 				const actorData = actor.getRollData();
-				const actorClasses = Object.keys(actorData.classes).join('/');
+				const actorClasses = actorData.class;
 				actorContext = ` from a ${actorClasses}`;
 				break;
 			case 'npc':
-				actorContext = ` from a ${actor.name} creature`;
+				actorContext = ` from a ${actor.name}`;
 				break;
 			case 'vehicle':
 				actorContext = ` from a ${actor.name} vehicle`;
