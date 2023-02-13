@@ -65,7 +65,7 @@ Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
 		});
 	}
 	else {
-		const subjectTypeMapping = {'vehicle': 'vehicle', 'group': 'group'};
+		const subjectTypeMapping = {'mech': 'mech', 'ship': 'star ship', 'vehicle': 'vehicle', 'faction': 'faction', 'group': 'group'};
 
 		headerButtons.unshift({
 			label: 'GPT-3',
@@ -95,7 +95,8 @@ Hooks.on('getItemSheetHeaderButtons', (sheet, headerButtons) => {
 			case 'character':
 				const actorData = actor.getRollData();
 				const actorClasses = actorData.class;
-				actorContext = ` from a ${actorClasses}`;
+				const actorBackground = actorData.background
+				actorContext = ` from a ${actorClasses} ${actorBackground} named ${actor.name}`;
 				break;
 			case 'npc':
 				actorContext = ` from a ${actor.name}`;
