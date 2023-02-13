@@ -45,7 +45,7 @@ Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
 	}
 	else if (actorType === 'npc') {
 		const actorData = actor.getRollData();
-		const appearanceContext = actorData.notes.right.content;
+		const appearanceContext = actorData.notes.right.contents;
 		
 		const subjectContext = `that is/has ${appearanceContext}`;
 		headerButtons.unshift({
