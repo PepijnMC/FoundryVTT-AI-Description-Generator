@@ -100,15 +100,27 @@ Hooks.on('getItemSheetHeaderButtons', (sheet, headerButtons) => {
 			case 'npc':
 				actorContext = ` from a ${actor.name}`;
 				break;
+			case 'ship':
+				actorContext = ` from a ${actor.name} starship`;
+				break;
 			case 'vehicle':
 				actorContext = ` from a ${actor.name} vehicle`;
+				break;
+			case 'mech':
+				actorContext = ` from a ${actor.name} mech`;
+				break;
+			case 'drone':
+				actorContext = ` from a ${actor.name} drone`;
+				break;
+			case 'faction':
+				actorContext = ` from the ${actor.name} faction`;
 				break;
 			case 'group':
 				actorContext = ` from a group of ${actor.name}`;
 				break;
 		}
 	}
-	const subjectTypeMapping = {'backpack': 'container', 'consumable': 'item', 'equipment': 'item', 'feat': `feature${actorContext}`, 'loot': 'item', 'spell': `spell${actorContext}`, 'tool': 'tool', 'weapon': `attack${actorContext}`};
+	const subjectTypeMapping = {'item': 'item', 'cyberware': 'cyberware', 'focus': `focus${actorContext}`, 'skill': `skill${actorContext}`, 'power': `power${actorContext}`, 'armor': 'armor', 'weapon': `attack${actorContext}`, 'shipWeapon': `attack${actorContext}`, 'shipDefense': `defense systems${actorContext}`, 'shipFitting': `fitting${actorContext}`, 'asset': `asset${actorContext}`};
 	var subjectType = sheet.object.type;
 	if (subjectType in subjectTypeMapping) {
 		headerButtons.unshift({
