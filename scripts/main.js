@@ -65,7 +65,7 @@ Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
 		});
 	}
 	else {
-		const subjectTypeMapping = {'npc': 'creature', 'vehicle': 'vehicle', 'group': 'group'};
+		const subjectTypeMapping = {'vehicle': 'vehicle', 'group': 'group'};
 
 		headerButtons.unshift({
 			label: 'GPT-3',
