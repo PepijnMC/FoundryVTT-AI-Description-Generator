@@ -23,9 +23,10 @@ Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
 		const actorData = actor.getRollData();
 		const lineageContext = actorData.species;
 		const classContext = actorData.class;
+		const backgroundContext = actorData.background;
 		const appearanceContext = actorData.biography;
 		
-		const subject = `${lineageContext} ${classContext} player character`;
+		const subject = `${lineageContext} ${classContext} ${backgroundContext} player character`;
 		const subjectContext = `who is/has ${appearanceContext}`;
 		headerButtons.unshift({
 			label: 'GPT-3',
