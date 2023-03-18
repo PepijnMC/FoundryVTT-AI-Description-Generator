@@ -45,7 +45,7 @@ All actors, items, attacks, spells, and features have a button added in their he
 
 ![The button on the sheet](https://raw.githubusercontent.com/PepijnMC/FoundryVTT-AI-Description-Generator/main/media/Button.png)
 
-### Player Characters
+### Player Characters (Dnd5e only!)
 The prompt constructed for PC actors is a bit different than for other actors. PCs use their lineage and classes as the `subject`, instead of using the actor's name. Anything written in the `appearance` text box is also passed along as additional context. It is recommended to be short but concise to generate results that fit the character you have envisioned in your mind, for example: `male, wild white hair, steampunk clothing, red eyes`.
 
 ### Examples
