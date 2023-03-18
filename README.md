@@ -7,8 +7,6 @@ This module is a fork of PepijnMC's work that makes it compatible with the offic
 
 > This module does not require any credentials except for your API key, which is stored locally in your Foundry settings. All billing is done from your OpenAI account. This key could be accessed by other programs and modules although they would have little reason to do so, nevertheless be careful and once again make sure to set a monthly limit to avoid unsuspected costs.
 
-GPT-3 is a text-based AI by [OpenAI](https://beta.openai.com/). This module provides a user-friendly implentation to communicate with its API from within your Foundry games to generate descriptions on the fly. The module provides direct support for actors, items, attacks, spells, and features.
-
 ## System Support
 By default your current rpg system is integrated into the prompt to give GPT-3 the context it needs. By the nature of GPT-3 it will work better for popular systems and worse for very niche systems. If your system produces subpar results you can manually change the system in the settings to something that provides more context than just the system's name.
 
@@ -45,7 +43,7 @@ All actors, items, attacks, spells, and features have a button added in their he
 
 ![The button on the sheet](https://raw.githubusercontent.com/PepijnMC/FoundryVTT-AI-Description-Generator/main/media/Button.png)
 
-### Player Characters (Dnd5e only!)
+### Player Characters (SWN/CWN only!)
 The prompt constructed for PC actors is a bit different than for other actors. PCs use their lineage and classes as the `subject`, instead of using the actor's name. Anything written in the `appearance` text box is also passed along as additional context. It is recommended to be short but concise to generate results that fit the character you have envisioned in your mind, for example: `male, wild white hair, steampunk clothing, red eyes`.
 
 ### Examples
