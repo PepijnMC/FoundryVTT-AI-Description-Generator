@@ -71,95 +71,90 @@ export function constructPrompt(language, system, world, subject, subjectType = 
 
 //Send a prompt the GPT-3.
 export function sendPrompt(prompt, key = game.settings.get('ai-description-generator', 'key')) {
-    const speaker = game.settings.get('ai-description-generator', 'ai_name')
+    const speaker = game.settings.get('ai-description-generator', 'ai_name');
 
-        if (game.settings.get('ai-description-generator', 'debug')) {
-            const message = {
-                user: game.user,
-                speaker: {
-                    alias: `${speaker} (Debug)`
-                },
-                content: prompt
-            }
-            if (game.settings.get('ai-description-generator', 'whisper'))
-                message['whisper'] = [game.userId]
-                ChatMessage.create(message);
-            return;
-        }
-        console.log(`AI Description Generator | Sending the following prompt to GPT-3: ${prompt}`);
+    if (game.settings.get('ai-description-generator', 'debug')) {
+        const message = {
+            user: game.user,
+            speaker: {
+                alias: `${speaker} (Debug)`
+            },
+            content: prompt
+        };
+        if (game.settings.get('ai-description-generator', 'whisper'))
+            message['whisper'] = [game.userId];
+        ChatMessage.create(message);
+        return;
+    }
+    console.log(`AI Description Generator | Sending the following prompt to GPT-3: ${prompt}`);
     var response = '';
 
-    if (game.settings.get('ai-description-generator', 'model') === 'gpt-3.5-turbo') {//set turbo flag and change endpoints for new turbo model. would love to set all the variables that change here.
-		var turbo = true
-        var endpoint = `https://api.openai.com/v1/chat/completions`;
-    } else {
-		var turbo = false
-        var endpoint = `https://api.openai.com/v1/completions`
-    };
-    //Setup a http request to OpenAI's API using the provided key.
+    var endpoint = `https://api.openai.com/v1/chat/completions`;
+
+    // Setup a http request to OpenAI's API using the provided key.
     var oHttp = new XMLHttpRequest();
     oHttp.open("POST", endpoint);
     oHttp.setRequestHeader("Accept", "application/json");
     oHttp.setRequestHeader("Content-Type", "application/json");
     oHttp.setRequestHeader("Authorization", 'Bearer ' + key);
 
-    //Add a listener to the request to catch its response.
+    // Add a listener to the request to catch its response.
     oHttp.onreadystatechange = function () {
         if (oHttp.readyState === 4) {
-            var oJson = {}
+            var oJson = {};
             if (response != "")
                 response += "\n";
 
             try {
                 oJson = JSON.parse(oHttp.responseText);
             } catch (ex) {
-                response += "Error: " + ex.message
+                response += "Error: " + ex.message;
             }
 
             if (oJson.error && oJson.error.message) {
                 response += "Error: " + oJson.error.message;
-            } else if (turbo) {//need different response listener for turbo model. Can refine this to be better later.
-				if (oJson.choices[0].message && oJson.choices[0].message.content) {
-				var s = oJson.choices[0].message.content;
-				console.log(s)
-				if (s == "")
-					s = "No response";
-				response += s;
-				}
-			} else if (oJson.choices && oJson.choices[0].text) {
-				var s = oJson.choices[0].text;
-				if (s == "")
-					s = "No response";
-				response += s;
-			}
-			
-			
+            } else if (oJson.choices && oJson.choices[0].message && oJson.choices[0].message.content) {
+                var s = oJson.choices[0].message.content;
+                if (s == "")
+                    s = "No response";
+                response += s;
+            }
+
             const message = {
                 user: game.user,
                 speaker: {
                     alias: speaker
                 },
                 content: response
-            }
+            };
             if (game.settings.get('ai-description-generator', 'whisper'))
-                message['whisper'] = [game.userId]
-                ChatMessage.create(message);
+                message['whisper'] = [game.userId];
+            ChatMessage.create(message);
         }
-    }; 
-	var data = {
-		model: game.settings.get('ai-description-generator', 'model'),
-		prompt:prompt,
-		max_tokens: game.settings.get('ai-description-generator', 'max_tokens'),
-		user: '1',
-		temperature: game.settings.get('ai-description-generator', 'temperature'),
-		frequency_penalty: game.settings.get('ai-description-generator', 'frequency_penalty'), //Number between -2.0 and 2.0  Positive value decrease the model's likelihood to repeat the same line verbatim.
-		presence_penalty: game.settings.get('ai-description-generator', 'presence_penalty'), //Number between -2.0 and 2.0. Positive values increase the model's likelihood to talk about new topics.
-		stop: ["#", ";"]//Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.
-	};
-		if (turbo) { //change request for turbo model format
-		delete data.prompt
-		data.messages = [{"role": "user",content: prompt}]
-		}
-    oHttp.send(JSON.stringify(data)); //Send the data.
+    };
 
+    var data = {
+        model: game.settings.get('ai-description-generator', 'model'),
+        messages: [{"role": "user", content: prompt}],
+        max_tokens: game.settings.get('ai-description-generator', 'max_tokens'),
+        user: '1',
+        temperature: game.settings.get('ai-description-generator', 'temperature'),
+        frequency_penalty: game.settings.get('ai-description-generator', 'frequency_penalty'),
+        presence_penalty: game.settings.get('ai-description-generator', 'presence_penalty'),
+        stop: ["#", ";"]
+    };
+
+    oHttp.send(JSON.stringify(data));
 };
+
+    
+
+//Todo: New function to send a prompt to https://api.openai.com/v1/chat/completions exclusively. 
+//Will need the following features:
+//1. Fetch all FoundryVTT chat messages from the current scene, filter to only characters, GM, and AI and structure them as a list of messages.
+//2. Rename "ChatGPT" user to "Assistant" user for consistency with the GPT-3.5 Turbo API. 
+//3. All user messages uses the "user" user and append the actual username to the message content. GM messages should use the "system" user.
+//4. The first message is always a "system" message containing the TTRPG system name and the world setting along with any language preferences.
+//5. The last message is always the most recent message in the chatbox.
+//6. Only the last 100 lines of chat are sent to the API (other than the first message).
+//Stretch Goal: Figure out a way to compress the string data past the last 100 messages. This would allow the AI to have a better understanding of the current situation.
