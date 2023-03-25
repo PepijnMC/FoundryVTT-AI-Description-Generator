@@ -2,7 +2,7 @@
   "id": "ai-description-generator",
   "title": "AI Description Generator",
   "description": "Utilizes the GPT-3 AI to generate descriptions from within Foundry.",
-  "version": "1.9.0-rc",
+  "version": "1.9.1-rc",
   "authors": [
     {
       "name": "Pepijn Sietsema (Original Author)",
@@ -27,6 +27,6 @@
     "scripts/main.js"
   ],
   "url": "https://github.com/th3raid0r/FoundryVTT-AI-Description-Generator",
-  "manifest": "https://github.com/th3raid0r/FoundryVTT-AI-Description-Generator/releases/download/v1.9.0-rc/module.json",
-  "download": "https://github.com/th3raid0r/FoundryVTT-AI-Description-Generator/releases/download/v1.9.0-rc/module.zip"
+  "manifest": "https://github.com/th3raid0r/FoundryVTT-AI-Description-Generator/releases/download/v1.9.1-rc/module.json",
+  "download": "https://github.com/th3raid0r/FoundryVTT-AI-Description-Generator/releases/download/v1.9.1-rc/module.zip"
 }

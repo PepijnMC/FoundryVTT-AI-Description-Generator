@@ -1,4 +1,4 @@
-function getContextValues(actorType, actorData) {
+export function getContextValues(actorType, actorData) {
     const defaultMappings = {
       character: {
         lineage: 'species',
@@ -24,11 +24,11 @@ function getContextValues(actorType, actorData) {
     return contextValues;
 }
 
-function getSubjectWithContext(subjectTypeMapping, subjectType, actorContext) {
+export function getSubjectWithContext(subjectTypeMapping, subjectType, actorContext) {
     const subject = subjectTypeMapping[subjectType] || subjectType;
     return subject.replace('{actorContext}', actorContext);
 }
 
-function getActorContext(contextTemplate, actorData, actor) {
+export function getActorContext(contextTemplate, actorData, actor) {
   return new Function('actorData', 'actor', 'return `' + contextTemplate + '`')(actorData, actor);
 }
