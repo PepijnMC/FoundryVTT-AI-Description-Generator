@@ -99,7 +99,7 @@ Hooks.on('getItemSheetHeaderButtons', (sheet, headerButtons) => {
                     game.settings.get('ai-description-generator', 'system'),
                     game.settings.get('ai-description-generator', 'world'),
                     sheet.object.name,
-                    subjectTypeMapping[subjectType],
+                    getActorContext(subjectTypeMapping[subjectType], null, null, actorContext),
                     'cool short sensory'
                 );
             }

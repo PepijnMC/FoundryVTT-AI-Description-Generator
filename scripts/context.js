@@ -29,6 +29,6 @@ export function getSubjectWithContext(subjectTypeMapping, subjectType, actorCont
     return subject.replace('{actorContext}', actorContext);
 }
 
-export function getActorContext(contextTemplate, actorData, actor) {
-  return new Function('actorData', 'actor', 'return `' + contextTemplate + '`')(actorData, actor);
+export function getActorContext(contextTemplate, actorData, actor, actorContext) {
+  return new Function('actorData', 'actor', 'actorContext', 'return `' + contextTemplate + '`')(actorData, actor, actorContext);
 }
