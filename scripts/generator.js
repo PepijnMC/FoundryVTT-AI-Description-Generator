@@ -134,7 +134,7 @@ export function sendPrompt(prompt, key = game.settings.get('ai-description-gener
     };
 
     var data = {
-        model: game.settings.get('ai-description-generator', 'model'),
+        model: "gpt-3.5-turbo",
         messages: [{"role": "user", content: prompt}],
         max_tokens: game.settings.get('ai-description-generator', 'max_tokens'),
         user: '1',
