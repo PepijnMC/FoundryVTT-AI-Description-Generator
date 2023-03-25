@@ -52,23 +52,25 @@ Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
 		});
 	}
 	else {
-		const subjectTypeMapping = getSubjectWithContext(subjectTypeMapping, subjectType, actorContext);
+		const subjectTypeMapping = JSON.parse(game.settings.get('ai-description-generator', 'subjectTypeMappings'));
 
-		headerButtons.unshift({
-			label: 'ChatGPT',
+		if (subjectTypeMapping[actorType]) {
+		  headerButtons.unshift({
+			label: 'GPT-3',
 			icon: 'fas fa-comment-dots',
 			class: 'gpt-actor-button',
 			onclick: () => {
-				constructPrompt(
-					game.settings.get('ai-description-generator', 'language'),
-					game.settings.get('ai-description-generator', 'system'),
-					game.settings.get('ai-description-generator', 'world'),
-					actor.name,
-					subjectTypeMapping[actorType],
-					'cool short sensory'
-				);
+			  constructPrompt(
+				game.settings.get('ai-description-generator', 'language'),
+				game.settings.get('ai-description-generator', 'system'),
+				game.settings.get('ai-description-generator', 'world'),
+				actor.name,
+				subjectTypeMapping[actorType],
+				'cool short sensory'
+			  );
 			}
-		});
+		  });
+		}
 	}
 });
 
@@ -79,14 +81,14 @@ Hooks.on('getItemSheetHeaderButtons', (sheet, headerButtons) => {
     var actorContext = '';
     if (actor) {
         const actorData = actor.getRollData();
-        const templates = game.settings.get('ai-description-generator', 'actorContextTemplates');
+        const templates = JSON.parse(game.settings.get('ai-description-generator', 'actorContextTemplates'));
         const contextTemplate = templates[actor.type];
 
         if (contextTemplate) {
             actorContext = getActorContext(contextTemplate, actorData, actor);
         }
     }
-    const subjectTypeMapping = game.settings.get('ai-description-generator', 'itemSubjectTypeMappings');
+    const subjectTypeMapping = JSON.parse(game.settings.get('ai-description-generator', 'itemSubjectTypeMappings'));
     var subjectType = sheet.object.type;
     if (subjectType in subjectTypeMapping) {
         headerButtons.unshift({

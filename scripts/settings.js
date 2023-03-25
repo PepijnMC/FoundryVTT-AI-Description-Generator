@@ -167,8 +167,8 @@ export function registerSettings() {
 		hint: 'Custom context mappings for actor types. Use JSON format.',
 		scope: 'world',
 		config: true,
-		type: Object,
-		default: {
+		type: String,
+		default: JSON.stringify({
 			"character": {
 				"lineage": "species",
 				"class": "class",
@@ -178,7 +178,7 @@ export function registerSettings() {
 			"npc": {
 				"appearance": "notes.right.contents"
 			}
-		},
+		}),
 		requiresReload: true
 	});
 
@@ -187,14 +187,14 @@ export function registerSettings() {
 		hint: 'Custom subject type mappings for actor types. Use JSON format.',
 		scope: 'world',
 		config: true,
-		type: Object,
-		default: {
+		type: String,
+		default: JSON.stringify({
 		  "mech": "mech",
 		  "ship": "star ship",
 		  "vehicle": "vehicle",
 		  "faction": "faction",
 		  "group": "group"
-		},
+		}),
 		requiresReload: true
 	});
 	  
@@ -203,8 +203,8 @@ export function registerSettings() {
 		hint: 'Custom templates for actor contexts. Use JSON format. Use direct object references like ${actorData.class}, ${actorData.background}, and ${actor.name}.',
 		scope: 'world',
 		config: true,
-		type: Object,
-		default: {
+		type: String,
+		default: JSON.stringify({
 		  "character": " from a ${actorData.class} ${actorData.background} named ${actor.name}",
 		  "npc": " from a ${actor.name}",
 		  "ship": " from a ${actor.name} starship",
@@ -213,7 +213,7 @@ export function registerSettings() {
 		  "drone": " from a ${actor.name} drone",
 		  "faction": " from the ${actor.name} faction",
 		  "group": " from a group of ${actor.name}"
-		},
+		}),
 		requiresReload: true
 	});
 
@@ -222,8 +222,8 @@ export function registerSettings() {
 		hint: 'Custom subject type mappings for item types. Use JSON format. Use {actorContext} as a placeholder for the actor context.',
 		scope: 'world',
 		config: true,
-		type: Object,
-		default: {
+		type: String,
+		default: JSON.stringify({
 		  "item": "item",
 		  "cyberware": "cyberware",
 		  "armor": "armor",
@@ -235,7 +235,7 @@ export function registerSettings() {
 		  "shipDefense": "defense systems${actorContext}",
 		  "shipFitting": "fitting${actorContext}",
 		  "asset": "asset${actorContext}"
-		},
+		}),
 		requiresReload: true
 	});
 }

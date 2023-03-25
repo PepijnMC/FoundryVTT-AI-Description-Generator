@@ -11,7 +11,7 @@ export function getContextValues(actorType, actorData) {
       }
     };
   
-    const userMappings = game.settings.get('ai-description-generator', 'contextMappings') || {};
+    const userMappings = JSON.parse(game.settings.get('ai-description-generator', 'contextMappings')) || {};
   
     const contextKeys = Object.keys(defaultMappings[actorType]);
     const contextValues = {};
