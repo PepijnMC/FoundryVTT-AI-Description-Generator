@@ -178,7 +178,8 @@ export function registerSettings() {
 			"npc": {
 				"appearance": "notes.right.contents"
 			}
-		}
+		},
+		requiresReload: true
 	});
 
 	game.settings.register('ai-description-generator', 'subjectTypeMappings', {
@@ -193,7 +194,8 @@ export function registerSettings() {
 		  "vehicle": "vehicle",
 		  "faction": "faction",
 		  "group": "group"
-		}
+		},
+		requiresReload: true
 	});
 	  
 	game.settings.register('ai-description-generator', 'actorContextTemplates', {
@@ -211,7 +213,8 @@ export function registerSettings() {
 		  "drone": " from a ${actor.name} drone",
 		  "faction": " from the ${actor.name} faction",
 		  "group": " from a group of ${actor.name}"
-		}
+		},
+		requiresReload: true
 	});
 
 	game.settings.register('ai-description-generator', 'itemSubjectTypeMappings', {
@@ -224,14 +227,15 @@ export function registerSettings() {
 		  "item": "item",
 		  "cyberware": "cyberware",
 		  "armor": "armor",
-		  "focus": "focus{actorContext}",
-		  "skill": "skill{actorContext}",
-		  "power": "power{actorContext}",
-		  "weapon": "attack{actorContext}",
-		  "shipWeapon": "attack{actorContext}",
-		  "shipDefense": "defense systems{actorContext}",
-		  "shipFitting": "fitting{actorContext}",
-		  "asset": "asset{actorContext}"
-		}
+		  "focus": "focus${actorContext}",
+		  "skill": "skill${actorContext}",
+		  "power": "power${actorContext}",
+		  "weapon": "attack${actorContext}",
+		  "shipWeapon": "attack${actorContext}",
+		  "shipDefense": "defense systems${actorContext}",
+		  "shipFitting": "fitting${actorContext}",
+		  "asset": "asset${actorContext}"
+		},
+		requiresReload: true
 	});
 }
