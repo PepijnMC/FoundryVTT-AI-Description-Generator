@@ -102,7 +102,7 @@ export function getChats() {
             const speaker = m.speaker;
             const content = m.content;
             const role = speaker && speaker.alias === "ChatGPT" ? "assistant" : "user";
-            const alias = speaker?.alias ?? "gamemaster";
+            const alias = speaker && speaker.alias !== "" ? speaker.alias : "gamemaster";
             return {
                 role: role,
                 content: role === "assistant" ? content : `${alias}: ${content}`
