@@ -82,7 +82,7 @@ export function constructPrompt(language, system, world, subject, subjectType = 
 
 // a function to fetch a filtered array of all chats and structure them to be compatible with the api.
 export function getChats() {
-    const limit = game.settings.get("ai-description-generator", "max_chats"); // get the value of "max_chats" setting
+    const limit = game.settings.get("ai-description-generator", "max_chat_history"); // get the value of "max_chats" setting
     const chats = game.messages.entities
         .filter(m => {
             const speaker = m.data.speaker;
