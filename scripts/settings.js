@@ -87,16 +87,16 @@ export function registerSettings() {
 	});
 
 	game.settings.register('ai-description-generator', 'settingprompt', {
-		name: 'AI Prompt',
+		name: 'AI Setting Prompt Template',
 		hint: 'The prompt that is used to contruct a the system message for ChatGPT. Only alter this if you are dissatified with the results and know what you are doing!',
 		scope: 'world',
 		config: true,
 		type: String,
-		default: 'Give a {descriptionType} description the game master can use for a {subject} {subjectType}.'
+		default: 'Reply in {language}. This is a tabletop roleplaying game using the {system} system and the {world} setting.'
 	});
 
 	game.settings.register('ai-description-generator', 'prompt', {
-		name: 'AI Prompt',
+		name: 'AI Prompt Template',
 		hint: 'The prompt that is used to contruct a request for ChatGPT. Only alter this if you are dissatified with the results and know what you are doing!',
 		scope: 'world',
 		config: true,
