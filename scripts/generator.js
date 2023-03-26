@@ -87,15 +87,14 @@ export function constructPrompt(language, system, world, subject, subjectType = 
 // a function to fetch a filtered array of all chats and structure them to be compatible with the api.
 export function getChats() {
     const limit = game.settings.get("ai-description-generator", "max_chat_history"); // get the value of "max_chats" setting
-    const htmlRegex = /<\/?\w+((\s+\w+(\s*=\s*(?:\w+|"[^"]*"))?)+\s*|\s*)\/?>/g;
+    const htmlRegex = /\\?<\/?\w+((\s+\w+(\s*=\s*(?:\w+|"[^"]*"))?)+\s*|\s*)\/?>/g;
     const entityRegex = /&[^\s;]+;/g;
     const chats = game.messages.contents
         .filter(m => {
             const speaker = m.speaker;
             const content = m.content;
-            return speaker && (speaker.actor || speaker.actor === null || speaker.actor === undefined || speaker.alias === "ChatGPT") && 
-            !m.data.type === CONST.CHAT_MESSAGE_TYPES.ROLL && (m.data.type === CONST.CHAT_MESSAGE_TYPES.OOC && speaker.alias !== "ChatGPT" && speaker.alias !== "gamemaster") &&
-            !htmlRegex.test(content) && !entityRegex.test(content);
+            return speaker && (speaker.actor || speaker.actor === null || speaker.actor === undefined || speaker.alias === "ChatGPT" || speaker.alias === "gamemaster") && 
+            !m.data.type === CONST.CHAT_MESSAGE_TYPES.ROLL && !htmlRegex.test(content) && !entityRegex.test(content);
         })
         .sort((a, b) => a.timestamp - b.timestamp)
         .slice(-limit)
