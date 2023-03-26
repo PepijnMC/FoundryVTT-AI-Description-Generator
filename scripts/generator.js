@@ -94,7 +94,7 @@ export function getChats() {
             const speaker = m.speaker;
             const content = m.content;
             return speaker && (speaker.actor || speaker.actor === null || speaker.actor === undefined || speaker.alias === "ChatGPT" || speaker.alias === "gamemaster") && 
-            !m.data.type === CONST.CHAT_MESSAGE_TYPES.ROLL && !htmlRegex.test(content) && !entityRegex.test(content);
+            !(m.data.type === CONST.CHAT_MESSAGE_TYPES.ROLL) && !htmlRegex.test(content) && !entityRegex.test(content);
         })
         .sort((a, b) => a.timestamp - b.timestamp)
         .slice(-limit)
