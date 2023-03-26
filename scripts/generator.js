@@ -90,7 +90,7 @@ export function getChats() {
     const chats = game.messages.contents
         .filter(m => {
             const speaker = m.speaker;
-            return (speaker || speaker.isGM || speaker.alias === "ChatGPT") && !m.isRoll &&
+            return speaker && (speaker.actor || speaker.isGM || speaker.alias === "ChatGPT") && !m.isRoll &&
                 (!m.data.flags || !m.data.flags.core || !m.data.flags.core['actor'] || !m.data.flags.core['skill']) &&
                 !m.data.whisper && m.data.type === CONST.CHAT_MESSAGE_TYPES.IC;
         })
