@@ -20,15 +20,22 @@ export function addChatCommands(log, data, chatData) {
 			game.settings.get('ai-description-generator', 'world'),
 			subject,
 			'',
-			'cool short sensory'
+			'cool short sensory',
+			false
 		);
 		return false;
 	}
 	if (subCommand == 'send') {
 		const prompt = data.split(' ').slice(2, this.length).join(' ');
 		if (prompt === '') return;
-		sendPrompt(
-			prompt
+		constructPrompt(
+			game.settings.get('ai-description-generator', 'language'),
+			game.settings.get('ai-description-generator', 'system'),
+			game.settings.get('ai-description-generator', 'world'),
+			prompt,
+			'',
+			'',
+			true
 		);
 		return false;
 	}

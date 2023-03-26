@@ -1,5 +1,5 @@
 //Construct a prompt based on the given parameters.
-export function constructPrompt(language, system, world, subject, subjectType = '', descriptionType = '', key = game.settings.get('ai-description-generator', 'key')) {
+export function constructPrompt(language, system, world, subject, subjectType = '', descriptionType = '', isRaw = false, key = game.settings.get('ai-description-generator', 'key') ) {
     //A mapping for Foundry's languages since only the key is stored but the value is needed.
     const foundryLanguages = {
         "en": "English",
@@ -76,6 +76,10 @@ export function constructPrompt(language, system, world, subject, subjectType = 
         prompt = prompt.replace(key, value);
     }
 
+    if (isRaw) {
+        prompt = subject;
+    }
+
     //Send the prompt.
     sendPrompt(settingprompt, prompt, key)
 }
@@ -85,18 +89,22 @@ export function getChats() {
     const limit = game.settings.get("ai-description-generator", "max_chat_history"); // get the value of "max_chats" setting
     const chats = game.messages.contents
         .filter(m => {
-            const speaker = m.data.speaker;
-            return speaker.actor === null || speaker.actor === undefined || speaker.alias === "ChatGPT";
+            const speaker = m.speaker;
+            return (speaker || speaker.isGM || speaker.alias === "ChatGPT") && !m.isRoll &&
+                (!m.data.flags || !m.data.flags.core || !m.data.flags.core['actor'] || !m.data.flags.core['skill']) &&
+                !m.data.whisper && m.data.type === CONST.CHAT_MESSAGE_TYPES.IC;
         })
-        .sort((a, b) => a.data.timestamp - b.data.timestamp)
-        .slice(-limit) // get the last `limit` messages
+        .sort((a, b) => a.timestamp - b.timestamp)
+        .slice(-limit)
         .map(m => {
-            const speaker = m.data.speaker;
-            const content = m.data.content;
-            const role = speaker.alias === "ChatGPT" ? "assistant" : "user";
+            const speaker = m.speaker;
+            const content = m.content;
+            const role = speaker && speaker.alias === "ChatGPT" ? "assistant" : "user";
+            const alias = speaker ? speaker.alias : "anonymous";
+            const prefix = speaker && speaker.isGM ? "gamemaster: " : "";
             return {
                 role: role,
-                content: role === "assistant" ? content : `${speaker.alias}: ${content}`
+                content: role === "assistant" ? content : `${prefix}${alias}: ${content}`
             };
         });
     return chats;

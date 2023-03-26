@@ -46,7 +46,8 @@ Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
 			  game.settings.get('ai-description-generator', 'world'),
 			  subject,
 			  subjectContext,
-			  'cool short visual'
+			  'cool short visual',
+			  false
 			);
 		  }
 		});
@@ -66,7 +67,8 @@ Hooks.on('getActorSheetHeaderButtons', (sheet, headerButtons) => {
 				game.settings.get('ai-description-generator', 'world'),
 				actor.name,
 				subjectTypeMapping[actorType],
-				'cool short sensory'
+				'cool short sensory',
+				false
 			  );
 			}
 		  });
@@ -102,7 +104,8 @@ Hooks.on('getItemSheetHeaderButtons', (sheet, headerButtons) => {
                     game.settings.get('ai-description-generator', 'world'),
                     sheet.object.name,
                     getActorContext(subjectTypeMapping[subjectType], null, null, actorContext),
-                    'cool short sensory'
+                    'cool short sensory',
+					false
                 );
             }
         });
