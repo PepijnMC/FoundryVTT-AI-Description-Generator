@@ -83,16 +83,25 @@ export function registerSettings() {
 		scope: 'world',
 		config: true,
 		type: String,
-		default: 'GPT-3'
+		default: 'ChatGPT'
+	});
+
+	game.settings.register('ai-description-generator', 'settingprompt', {
+		name: 'AI Prompt',
+		hint: 'The prompt that is used to contruct a the system message for ChatGPT. Only alter this if you are dissatified with the results and know what you are doing!',
+		scope: 'world',
+		config: true,
+		type: String,
+		default: 'Give a {descriptionType} description the game master can use for a {subject} {subjectType}.'
 	});
 
 	game.settings.register('ai-description-generator', 'prompt', {
 		name: 'AI Prompt',
-		hint: 'The prompt that is used to contruct a request for GPT-3. Only alter this if you are dissatified with the results and know what you are doing!',
+		hint: 'The prompt that is used to contruct a request for ChatGPT. Only alter this if you are dissatified with the results and know what you are doing!',
 		scope: 'world',
 		config: true,
 		type: String,
-		default: 'Reply in {language}. This is a tabletop roleplaying game using the {system} system and the {world} setting. Give a {descriptionType} description the game master can use for a {subject} {subjectType}.'
+		default: 'Give a {descriptionType} description the game master can use for a {subject} {subjectType}.'
 	});
 
 	game.settings.register('ai-description-generator', 'max_tokens', {
@@ -146,7 +155,7 @@ export function registerSettings() {
 
 	game.settings.register('ai-description-generator', 'debug', {
 		name: 'Debug Mode',
-		hint: 'When enabled the module will send prompts to chat and prevents them from being sent to GPT-3. Useful for testing and debugging.',
+		hint: 'When enabled the module will send prompts to chat and prevents them from being sent to ChatGPT. Useful for testing and debugging.',
 		scope: 'world',
 		config: true,
 		type: Boolean,
@@ -160,6 +169,20 @@ export function registerSettings() {
 		config: false,
 		type: Number,
 		default: 170
+	});
+
+	game.settings.register('ai-description-generator', 'max_chat_history', {
+        name: "Maximum number of chat messages to fetch",
+        hint: "Sets the maximum number of chat messages to fetch for the AI prompt",
+        scope: "world",
+        config: true,
+        default: 50,
+        type: Number,
+        range: {
+            min: 1,
+            max: 100,
+            step: 1
+        }
 	});
 
 	game.settings.register('ai-description-generator', 'contextMappings', {

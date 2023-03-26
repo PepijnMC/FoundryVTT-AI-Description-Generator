@@ -30,22 +30,26 @@ export function constructPrompt(language, system, world, subject, subjectType = 
         'australian',
         'aus'
     ];
-
-    const defaultPrompt = 'Reply in {language}. This is a tabletop roleplaying game using the {system} system and the {world} setting. Give a {descriptionType} description the game master can use for a {subject} {subjectType}.';
+    const defaultSettingPrompt = 'Reply in {language}. This is a tabletop roleplaying game using the {system} system and the {world} setting.'
+    const defaultPrompt = 'Give a {descriptionType} description the game master can use for a {subject} {subjectType}.';
     var prompt = game.settings.get('ai-description-generator', 'prompt');
-    if (prompt === defaultPrompt) {
+    var settingprompt = game.settings.get('ai-description-generator', 'settingprompt');
+    if (settingprompt === defaultSettingPrompt) {
         //If the module's language setting is left blank use the core language setting instead.
         if (language == '')
             language = foundryLanguages[game.settings.get('core', 'language')];
         //Remove the language request from the prompt for English languages.
         if (englishLanguages.includes(language.toLowerCase()))
-            prompt = prompt.replace('Reply in {language}. ', '');
-        //If the system name already includes the word 'system' remove it from the prompt.
+            settingprompt = settingprompt.replace('Reply in {language}. ', '');
+        //If the system name already includes the word 'system' remove it from the settingprompt.
         if (system.toLowerCase().includes('system'))
-            prompt = prompt.replace(' system ', ' ');
-        //If no world is given remove it from the prompt.
+            settingprompt = settingprompt.replace(' system ', ' ');
+        //If no world is given remove it from the settingprompt.
         if (world == '')
-            prompt = prompt.replace(' and the {world} setting', '');
+            settingprompt = settingprompt.replace(' and the {world} setting', '');
+    }
+
+    if (prompt === defaultPrompt) {
         //If no subject type is given remove it from the prompt.
         if (subjectType == '')
             prompt = prompt.replace(' {subjectType}', '');
@@ -53,10 +57,17 @@ export function constructPrompt(language, system, world, subject, subjectType = 
         if (descriptionType == '')
             prompt = prompt.replace(' {descriptionType}', '');
     }
-    var prompt_mapping = {
+
+    var settingprompt_mapping = {
         '{language}': language,
         '{system}': system,
-        '{world}': world,
+        '{world}': world       
+    }
+    for (const[key, value]of Object.entries(settingprompt_mapping)) {
+        settingprompt = settingprompt.replace(key, value);
+    }
+    
+    var prompt_mapping = {
         '{subject}': subject,
         '{subjectType}': subjectType,
         '{descriptionType}': descriptionType
@@ -66,11 +77,34 @@ export function constructPrompt(language, system, world, subject, subjectType = 
     }
 
     //Send the prompt.
-    sendPrompt(prompt, key)
+    sendPrompt(settingprompt, prompt, key)
 }
 
+// a function to fetch a filtered array of all chats and structure them to be compatible with the api.
+export function getChats() {
+    const limit = game.settings.get("ai-description-generator", "max_chats"); // get the value of "max_chats" setting
+    const chats = game.messages.entities
+        .filter(m => {
+            const speaker = m.data.speaker;
+            return speaker.actor === null || speaker.actor === undefined || speaker.alias === "ChatGPT";
+        })
+        .sort((a, b) => a.data.timestamp - b.data.timestamp)
+        .slice(-limit) // get the last `limit` messages
+        .map(m => {
+            const speaker = m.data.speaker;
+            const content = m.data.content;
+            const role = speaker.alias === "ChatGPT" ? "assistant" : "user";
+            return {
+                role: role,
+                content: role === "assistant" ? content : `${speaker.alias}: ${content}`
+            };
+        });
+    return chats;
+}
+
+
 //Send a prompt the GPT-3.
-export function sendPrompt(prompt, key = game.settings.get('ai-description-generator', 'key')) {
+export function sendPrompt(settingprompt, prompt, key = game.settings.get('ai-description-generator', 'key')) {
     const speaker = game.settings.get('ai-description-generator', 'ai_name');
 
     if (game.settings.get('ai-description-generator', 'debug')) {
@@ -135,7 +169,11 @@ export function sendPrompt(prompt, key = game.settings.get('ai-description-gener
 
     var data = {
         model: "gpt-3.5-turbo",
-        messages: [{"role": "user", content: prompt}],
+        messages: [
+            {"role": "system", content: settingprompt},
+            ...getChats(),
+            {"role": "user", content: prompt}
+        ],
         max_tokens: game.settings.get('ai-description-generator', 'max_tokens'),
         user: '1',
         temperature: game.settings.get('ai-description-generator', 'temperature'),
@@ -146,15 +184,3 @@ export function sendPrompt(prompt, key = game.settings.get('ai-description-gener
 
     oHttp.send(JSON.stringify(data));
 };
-
-    
-
-//Todo: New function to send a prompt to https://api.openai.com/v1/chat/completions exclusively. 
-//Will need the following features:
-//1. Fetch all FoundryVTT chat messages from the current scene, filter to only characters, GM, and AI and structure them as a list of messages.
-//2. Rename "ChatGPT" user to "Assistant" user for consistency with the GPT-3.5 Turbo API. 
-//3. All user messages uses the "user" user and append the actual username to the message content. GM messages should use the "system" user.
-//4. The first message is always a "system" message containing the TTRPG system name and the world setting along with any language preferences.
-//5. The last message is always the most recent message in the chatbox.
-//6. Only the last 100 lines of chat are sent to the API (other than the first message).
-//Stretch Goal: Figure out a way to compress the string data past the last 100 messages. This would allow the AI to have a better understanding of the current situation.
