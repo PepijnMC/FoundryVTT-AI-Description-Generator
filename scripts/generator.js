@@ -120,7 +120,7 @@ export function sendPrompt(settingprompt, prompt, key = game.settings.get('ai-de
         ChatMessage.create(message);
         return;
     }
-    console.log(`AI Description Generator | Sending the following prompt to GPT-3: ${prompt}`);
+    
     var response = '';
 
     var endpoint = `https://api.openai.com/v1/chat/completions`;
@@ -181,6 +181,7 @@ export function sendPrompt(settingprompt, prompt, key = game.settings.get('ai-de
         presence_penalty: game.settings.get('ai-description-generator', 'presence_penalty'),
         stop: ["#", ";"]
     };
-
+    logmessage = JSON.stringify(data.messages);
+    console.log(`AI Description Generator | Sending the following payload to GPT-3: ${logmessage}`);
     oHttp.send(JSON.stringify(data));
 };
