@@ -1,24 +1,26 @@
 ![Foundry Core Compatible Version](https://img.shields.io/badge/dynamic/json.svg?url=https%3A%2F%2Fgithub.com%2FPepijnMC%2FFoundryVTT-AI-Description-Generator%2Freleases%2Flatest%2Fdownload%2Fmodule.json&label=Foundry%20Version&query=$.compatibility.verified&colorB=orange&style=for-the-badge)
 
-# AI Description Generator - SWN Compatible Fork
-This module is a fork of PepijnMC's work that makes it compatible with the official Stars Without Number: Revised FoundryVTT System. 
+# AI Description Generator - A System Configurable fork (SWN by default)
+This module is a fork of PepijnMC's work that makes it compatible with the official Stars Without Number: Revised FoundryVTT System or ANY system, provided you know how to look up system mappings.
+
+<!--- TODO - create a guide on how to find mappings and configure your system - use an example by converting back to D&D --->
 
 > Although this module is completely free, the AI it uses is not. The module requires an API key obtained from https://beta.openai.com/account/api-keys and an OpenAI account with valid payment information. The pricing can be found at https://openai.com/api/pricing/, but on average you can expect each non-custom request made by this module to cost about $0.002 (2/10th of a single cent). It is advised to set a monthly usage limit if you are worried about costs, you can do so in your account settings here https://beta.openai.com/account/billing/limits.
 
 > This module does not require any credentials except for your API key, which is stored locally in your Foundry settings. All billing is done from your OpenAI account. This key could be accessed by other programs and modules although they would have little reason to do so, nevertheless be careful and once again make sure to set a monthly limit to avoid unsuspected costs.
 
 ## System Support
-By default your current rpg system is integrated into the prompt to give GPT-3 the context it needs. By the nature of GPT-3 it will work better for popular systems and worse for very niche systems. If your system produces subpar results you can manually change the system in the settings to something that provides more context than just the system's name.
+By default your current rpg system is integrated into the prompt to give ChatGPT the context it needs. By the nature of ChatGPT it will work better for popular systems, or very well indexed free systems like Stars Without Number and worse for very niche systems without any free documents. If your system produces subpar results you can manually change the system in the settings to something that provides more context than just the system's name.
 
 ## Language Support
-By default your current FoundryVTT language is integrated into the prompt to encourage GPT-3 to reply in that language. GPT-3 was trained mainly in English so the quality of results may vary in other languages.
+By default your current FoundryVTT language is integrated into the prompt to encourage ChatGPT to reply in that language. ChatGPT was trained mainly in English so the quality of results may vary in other languages.
 
 If you want to have some fun, try out `Pirate Speech`.
 
 ![Pirate Speech Description](https://github.com/PepijnMC/FoundryVTT-AI-Description-Generator/blob/main/media/Pirate%20Language.png?raw=true)
 
 ## Chat Commands
-There are two new commands available to the GM to send prompts to GPT-3.
+There are two new commands available to the GM to send prompts to ChatGPT.
 
 ```
 /gpt construct (subject)
@@ -43,10 +45,10 @@ All actors, items, attacks, spells, and features have a button added in their he
 
 ![The button on the sheet](https://raw.githubusercontent.com/PepijnMC/FoundryVTT-AI-Description-Generator/main/media/Button.png)
 
-### Player Characters (SWN/CWN only!)
-The prompt constructed for PC actors is a bit different than for other actors. PCs use their lineage and classes as the `subject`, instead of using the actor's name. Anything written in the `appearance` text box is also passed along as additional context. It is recommended to be short but concise to generate results that fit the character you have envisioned in your mind, for example: `male, wild white hair, steampunk clothing, red eyes`.
+### Player Characters (SWN/CWN Default -- Others Configurable)
+The prompt constructed for PC actors is a bit different than for other actors. PCs use their lineage and classes as the `subject`, instead of using the actor's name. Anything written in the `biography` text box is also passed along as additional context. It is recommended to be short but concise to generate results that fit the character you have envisioned in your mind, for example: `male, wild white hair, steampunk clothing, red eyes`.
 
-### Examples
+### Examples (OLD - From original D&D focused module)
 **Adult Green Dragon**
 
 ![A description generated for an Adult Green Dragon](https://github.com/PepijnMC/FoundryVTT-AI-Description-Generator/blob/main/media/Adult%20Green%20Dragon%20Description.png?raw=true)
@@ -86,16 +88,16 @@ The prompt constructed for PC actors is a bit different than for other actors. P
 ## Issues and Requests
 Please report issues and propose feature requests <a href="https://github.com/PepijnMC/AI-Description-Generator/issues" target="_blank">here</a>.
 
-The module will never send a request to GPT-3 without being told to by pressing a button, using chat commands, or using the API in macros or other modules. Nevertheless if you ever suspect you are being charged for unprovoked requests from this module please disable the module immediately and raise a critical issue.
+The module will never send a request to ChatGPT without being told to by pressing a button, using chat commands, or using the API in macros or other modules. Nevertheless if you ever suspect you are being charged for unprovoked requests from this module please disable the module immediately and raise a critical issue.
 
 ## API
 > Requires the module's 'Enable API Functions' setting to be enabled.
 
-> WARNING! Using any of these functions will send a request to GPT-3 for which you will be charged like any other request made by this module. As such please be careful implenting them in macros and other modules. Test your code well before implementing these functions and I strongly advice users to avoid looping and recursive functions.
+> WARNING! Using any of these functions will send a request to OpenAI's API for which you will be charged like any other request made by this module. As such please be careful implenting them in macros and other modules. Test your code well before implementing these functions and I strongly advice users to avoid looping and recursive functions.
 
 Functions to construct and send your own prompts are provided under `game.modules.get('ai-description-generator').api`:
 - `constructPrompt(language, system, world, subject, subjectType, descriptionType, key)`: Construct and sends a prompt based on the provided context similar to how the base module does it.
-	- `language`: The language GPT-3 will be encouraged to respond in. Use `game.settings.get('ai-description-generator', 'language')` to use the language provided in the module's/core's settings.
+	- `language`: The language ChatGPT will be encouraged to respond in. Use `game.settings.get('ai-description-generator', 'language')` to use the language provided in the module's/core's settings.
 	- `system`: The RPG system to be used for context. Use `game.settings.get('ai-description-generator', 'system')` to use the system that was provided in the module's settings.
 	- `world`: The world/setting to be used for context. Use `game.settings.get('ai-description-generator', 'world')` to use the world that was provided in the module's settings.
 	- `subject`: The name of the subject.
