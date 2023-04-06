@@ -1,13 +1,9 @@
 export function getContextValues(actorType, actorData) {
     const defaultMappings = {
       character: {
-        lineage: 'species',
+        lineage: 'race',
         class: 'class',
-        background: 'background',
-        appearance: 'biography'
-      },
-      npc: {
-        appearance: 'notes.right.contents'
+        appearance: 'appearance'
       }
     };
   
