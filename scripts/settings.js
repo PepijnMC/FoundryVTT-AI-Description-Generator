@@ -83,16 +83,25 @@ export function registerSettings() {
 		scope: 'world',
 		config: true,
 		type: String,
-		default: 'GPT-3'
+		default: 'ChatGPT'
 	});
 
-	game.settings.register('ai-description-generator', 'prompt', {
-		name: 'AI Prompt',
-		hint: 'The prompt that is used to contruct a request for GPT-3. Only alter this if you are dissatified with the results and know what you are doing!',
+	game.settings.register('ai-description-generator', 'settingprompt', {
+		name: 'AI Setting Prompt Template',
+		hint: 'The prompt that is used to contruct a the system message for ChatGPT. Only alter this if you are dissatified with the results and know what you are doing!',
 		scope: 'world',
 		config: true,
 		type: String,
-		default: 'Reply in {language}. This is a tabletop roleplaying game using the {system} system and the {world} setting. Give a {descriptionType} description the game master can use for a {subject} {subjectType}.'
+		default: 'Reply in {language}. This is a tabletop roleplaying game using the {system} system and the {world} setting.'
+	});
+
+	game.settings.register('ai-description-generator', 'prompt', {
+		name: 'AI Prompt Template',
+		hint: 'The prompt that is used to contruct a request for ChatGPT. Only alter this if you are dissatified with the results and know what you are doing!',
+		scope: 'world',
+		config: true,
+		type: String,
+		default: 'Give a {descriptionType} description the game master can use for a {subject} {subjectType}.'
 	});
 
 	game.settings.register('ai-description-generator', 'max_tokens', {
@@ -134,16 +143,6 @@ export function registerSettings() {
 		default: 0.0
 	});
 
-	game.settings.register('ai-description-generator', 'model', {
-		name: 'AI Model',
-		hint: 'GPT-3 offers 4 main models, davanci-003 being the latest. This setting should not be changed if you do not know what this means.',
-		scope: 'world',
-		config: true,
-		type: String,
-		default: 'text-davinci-003',
-		choices: { 'text-davinci-003': 'text-davinci-003', 'text-curie-001': 'text-curie-001', 'text-babbage-001': 'text-babbage-001', 'text-ada-001': 'text-ada-001' }
-	});
-
 	game.settings.register('ai-description-generator', 'api', {
 		name: 'Enable API Functions',
 		hint: 'Exposes functions to construct and send prompts in macros or other modules.',
@@ -156,7 +155,7 @@ export function registerSettings() {
 
 	game.settings.register('ai-description-generator', 'debug', {
 		name: 'Debug Mode',
-		hint: 'When enabled the module will send prompts to chat and prevents them from being sent to GPT-3. Useful for testing and debugging.',
+		hint: 'When enabled the module will send prompts to chat and prevents them from being sent to ChatGPT. Useful for testing and debugging.',
 		scope: 'world',
 		config: true,
 		type: Boolean,
@@ -169,6 +168,84 @@ export function registerSettings() {
 		scope: 'world',
 		config: false,
 		type: Number,
-		default: 150
+		default: 170
+	});
+
+	game.settings.register('ai-description-generator', 'max_chat_history', {
+        name: "Maximum number of chat messages to fetch",
+        hint: "Sets the maximum number of chat messages to fetch for the AI prompt",
+        scope: "world",
+        config: true,
+        default: 50,
+        type: Number,
+        range: {
+            min: 1,
+            max: 100,
+            step: 1
+        }
+	});
+
+	game.settings.register('ai-description-generator', 'contextMappings', {
+		name: 'Context Mappings',
+		hint: 'Custom context mappings for actor types. Use JSON format.',
+		scope: 'world',
+		config: true,
+		type: String,
+		default: JSON.stringify({
+			"character": {
+				"lineage": "details.race",
+				"class": "classes",
+				"appearance": "details.appearance"
+			}
+		}),
+		requiresReload: true
+	});
+
+	game.settings.register('ai-description-generator', 'subjectTypeMappings', {
+		name: 'Subject Type Mappings',
+		hint: 'Custom subject type mappings for actor types. Use JSON format.',
+		scope: 'world',
+		config: true,
+		type: String,
+		default: JSON.stringify({
+		  "npc": "creature",
+		  "vehicle": "vehicle",
+		  "group": "group"
+		}),
+		requiresReload: true
+	});
+	  
+	game.settings.register('ai-description-generator', 'actorContextTemplates', {
+		name: 'Actor Context Templates',
+		hint: 'Custom templates for actor contexts. Use JSON format. Use direct object references like ${actorData.class}, ${actorData.background}, and ${actor.name}.',
+		scope: 'world',
+		config: true,
+		type: String,
+		default: JSON.stringify({
+		  "character": " from a ${actorData.class} named ${actor.name}",
+		  "npc": " from a ${actor.name} creature",
+		  "vehicle": " from a ${actor.name} vehicle",
+		  "group": " from a group of ${actor.name}"
+		}),
+		requiresReload: true
+	});
+
+	game.settings.register('ai-description-generator', 'itemSubjectTypeMappings', {
+		name: 'Item Subject Type Mappings',
+		hint: 'Custom subject type mappings for item types. Use JSON format. Use {actorContext} as a placeholder for the actor context.',
+		scope: 'world',
+		config: true,
+		type: String,
+		default: JSON.stringify({
+		  "backpack": "container",
+		  "consumable": "consumable",
+		  "equipment": "item",
+		  "loot": "item",
+		  "feat": "feature${actorContext}",
+		  "spell": "spell${actorContext}",
+		  "weapon": "power${actorContext}",
+		  "tool": "tool"
+		}),
+		requiresReload: true
 	});
 }
