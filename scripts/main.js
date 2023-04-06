@@ -105,7 +105,7 @@ Hooks.on('getItemSheetHeaderButtons', (sheet, headerButtons) => {
                     sheet.object.name,
                     getActorContext(subjectTypeMapping[subjectType], null, null, actorContext),
                     'cool short sensory',
-					false
+		    false
                 );
             }
         });
