@@ -193,13 +193,9 @@ export function registerSettings() {
 		type: String,
 		default: JSON.stringify({
 			"character": {
-				"lineage": "species",
-				"class": "class",
-				"background": "background",
-				"appearance": "biography"
-			},
-			"npc": {
-				"appearance": "notes.right.contents"
+				"lineage": "details.race",
+				"class": "Object.keys(actorData.classes).join('/')",
+				"appearance": "details.appearance"
 			}
 		}),
 		requiresReload: true
@@ -212,10 +208,8 @@ export function registerSettings() {
 		config: true,
 		type: String,
 		default: JSON.stringify({
-		  "mech": "mech",
-		  "ship": "star ship",
+		  "npc": "creature",
 		  "vehicle": "vehicle",
-		  "faction": "faction",
 		  "group": "group"
 		}),
 		requiresReload: true
@@ -228,13 +222,9 @@ export function registerSettings() {
 		config: true,
 		type: String,
 		default: JSON.stringify({
-		  "character": " from a ${actorData.class} ${actorData.background} named ${actor.name}",
-		  "npc": " from a ${actor.name}",
-		  "ship": " from a ${actor.name} starship",
+		  "character": " from a ${actorData.class} named ${actor.name}",
+		  "npc": " from a ${actor.name} creature",
 		  "vehicle": " from a ${actor.name} vehicle",
-		  "mech": " from a ${actor.name} mech",
-		  "drone": " from a ${actor.name} drone",
-		  "faction": " from the ${actor.name} faction",
 		  "group": " from a group of ${actor.name}"
 		}),
 		requiresReload: true
@@ -247,17 +237,14 @@ export function registerSettings() {
 		config: true,
 		type: String,
 		default: JSON.stringify({
-		  "item": "item",
-		  "cyberware": "cyberware",
-		  "armor": "armor",
-		  "focus": "focus${actorContext}",
-		  "skill": "skill${actorContext}",
-		  "power": "power${actorContext}",
-		  "weapon": "attack${actorContext}",
-		  "shipWeapon": "attack${actorContext}",
-		  "shipDefense": "defense systems${actorContext}",
-		  "shipFitting": "fitting${actorContext}",
-		  "asset": "asset${actorContext}"
+		  "backpack": "container",
+		  "consumable": "consumable",
+		  "equipment": "item",
+		  "loot": "item",
+		  "feat": "feature${actorContext}",
+		  "spell": "spell${actorContext}",
+		  "weapon": "power${actorContext}",
+		  "tool": "tool"
 		}),
 		requiresReload: true
 	});
