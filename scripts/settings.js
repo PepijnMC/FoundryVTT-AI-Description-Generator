@@ -194,7 +194,7 @@ export function registerSettings() {
 		default: JSON.stringify({
 			"character": {
 				"lineage": "details.race",
-				"class": "Object.keys(actorData.classes).join('/')",
+				"class": "classes",
 				"appearance": "details.appearance"
 			}
 		}),
