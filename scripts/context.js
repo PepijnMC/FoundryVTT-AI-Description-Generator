@@ -1,9 +1,9 @@
 export function getContextValues(actorType, actorData) {
     const defaultMappings = {
       character: {
-        lineage: 'race',
-        class: 'Object.keys(actorData.classes).join('/')',
-        appearance: 'appearance'
+        lineage: 'details.race',
+        class: 'Object.keys(actorData.classes).join(\'/\')',
+        appearance: 'details.appearance'
       }
     };
   
