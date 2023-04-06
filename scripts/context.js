@@ -2,7 +2,7 @@ export function getContextValues(actorType, actorData) {
     const defaultMappings = {
       character: {
         lineage: 'details.race',
-        class: 'Object.keys(actorData.classes).join(\'/\')',
+        class: 'classes',
         appearance: 'details.appearance'
       }
     };
@@ -14,7 +14,14 @@ export function getContextValues(actorType, actorData) {
   
     for (const key of contextKeys) {
       const mapping = userMappings[actorType]?.[key] || defaultMappings[actorType][key];
-      contextValues[key] = getProperty(actorData, mapping);
+      let value = getProperty(actorData, mapping);
+        
+      // Handle class arrays
+      if (key === 'class' && Array.isArray(value)) {
+          value = Object.keys(value).join('/');
+      }
+        
+      contextValues[key] = value;
     }
   
     return contextValues;
