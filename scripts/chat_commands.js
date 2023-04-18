@@ -32,5 +32,20 @@ export function addChatCommands(log, data, chatData) {
 		);
 		return false;
 	}
+		if (subCommand == 'npc')
+	{
+		const args = data.split(' ').slice(2, this.length);
+		if (args.length === 0) return;
+		var subject = args.join(' ');
+		constructPrompt(
+			game.settings.get('ai-description-generator', 'language'),
+			game.settings.get('ai-description-generator', 'system'),
+			game.settings.get('ai-description-generator', 'world'),
+			subject,
+			'',
+			'in points: name, overview, personality traits, looks, expectations and roleplaying hints'
+		);
+		return false;
+	}
 	return;
 }
