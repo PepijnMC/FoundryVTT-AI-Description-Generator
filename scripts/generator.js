@@ -103,7 +103,7 @@ export function sendPrompt(prompt, key=game.settings.get('ai-description-generat
 				if (s == "") s = "No response";
 				response += s;
 			}
-			const message = {user: game.user, speaker: {alias: speaker}, content: response}
+			const message = {user: game.user, speaker: {alias: speaker}, content: response.trim().replaceAll('\n\n', '\n').replaceAll('\n', '<br />')}
 			if (game.settings.get('ai-description-generator', 'whisper')) message['whisper'] = [game.userId]
 			ChatMessage.create(message);
 		}
