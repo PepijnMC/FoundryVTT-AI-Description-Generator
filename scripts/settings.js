@@ -86,13 +86,31 @@ export function registerSettings() {
 		default: 'GPT-3'
 	});
 
-	game.settings.register('ai-description-generator', 'prompt', {
-		name: 'AI Prompt',
+	game.settings.register('ai-description-generator', 'basePrompt', {
+		name: 'Base Prompt',
 		hint: 'The prompt that is used to contruct a request for GPT-3. Only alter this if you are dissatified with the results and know what you are doing!',
 		scope: 'world',
 		config: true,
 		type: String,
-		default: 'Reply in {language}. This is a tabletop roleplaying game using the {system} system and the {world} setting. Give a {descriptionType} description the game master can use for a {subject} {subjectType}.'
+		default: 'Reply in {language}. This is a tabletop roleplaying game using {system}, set in {world}.'
+	});
+	
+	game.settings.register('ai-description-generator', 'descriptionPrompt', {
+		name: 'Description Prompt',
+		hint: 'This part of the prompt is used for providing static descriptions of items and characters.',
+		scope: 'world',
+		config: true,
+		type: String,
+		default: 'Give a {descriptionType} description the game master can use for a {subject} {subjectType}.'
+	});
+
+	game.settings.register('ai-description-generator', 'combatPrompt', {
+		name: 'Description Prompt',
+		hint: 'This part of the prompt is used for describing combat.',
+		scope: 'world',
+		config: true,
+		type: String,
+		default: 'Write a description for a round of combat with the following information. Attacker: {attacker}. Target: {target}. Weapon used:{weapon}. Attack effect: {effect}.'
 	});
 
 	game.settings.register('ai-description-generator', 'max_tokens', {
