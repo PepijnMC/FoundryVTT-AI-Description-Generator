@@ -1,5 +1,10 @@
-//Construct a prompt based on the given parameters.
-export function constructPrompt(language, system, world, subject, subjectType='', descriptionType='', key=game.settings.get('ai-description-generator', 'key')) {
+function basePrompt(){	
+	var prompt = 'Reply in {language}. This is a tabletop roleplaying game using {system}, set in {world}.';	
+	var settingsPrompt = game.settings.get('ai-description-generator', 'basePrompt');
+	if (settingsPrompt != '') prompt = settingsPrompt;
+	var language = game.settings.get('ai-description-generator', 'language');
+	var system = game.settings.get('ai-description-generator', 'system');
+	var world = game.settings.get('ai-description-generator', 'world');	
 	//A mapping for Foundry's languages since only the key is stored but the value is needed.
 	const foundryLanguages = {
 		"en": "English",
@@ -30,27 +35,37 @@ export function constructPrompt(language, system, world, subject, subjectType=''
 		'australian',
 		'aus'
 	];
-
-	const defaultPrompt = 'Reply in {language}. This is a tabletop roleplaying game using the {system} system and the {world} setting. Give a {descriptionType} description the game master can use for a {subject} {subjectType}.';
-	var prompt = game.settings.get('ai-description-generator', 'prompt');
-	if (prompt === defaultPrompt) {
-		//If the module's language setting is left blank use the core language setting instead.
-		if (language == '') language = foundryLanguages[game.settings.get('core', 'language')];
-		//Remove the language request from the prompt for English languages.
-		if (englishLanguages.includes(language.toLowerCase())) prompt = prompt.replace('Reply in {language}. ', '');
-		//If the system name already includes the word 'system' remove it from the prompt.
-		if (system.toLowerCase().includes('system')) prompt = prompt.replace(' system ', ' ');
-		//If no world is given remove it from the prompt.
-		if (world == '') prompt = prompt.replace(' and the {world} setting', '');
-		//If no subject type is given remove it from the prompt.
-		if (subjectType == '') prompt = prompt.replace(' {subjectType}', '');
-		//If no description type is given remove it from the prompt.
-		if (descriptionType == '') prompt = prompt.replace(' {descriptionType}', '');
-	}
+	//If the module's language setting is left blank use the core language setting instead.
+	if (language == '') language = foundryLanguages[game.settings.get('core', 'language')];
+	//Remove the language request from the prompt for English languages.
+	if (englishLanguages.includes(language.toLowerCase())) prompt = prompt.replace('Reply in {language}. ', '');
+	//If the system name already includes the word 'system' remove it from the prompt.
+	if (system.toLowerCase().includes('system')) prompt = prompt.replace(' system ', ' ');
+	//If no world is given remove it from the prompt.
+	if (world == '') prompt = prompt.replace(', set in {world}', '');
 	var prompt_mapping = {
 		'{language}': language,
 		'{system}': system,
-		'{world}': world,
+		'{world}': world		
+	};
+	for (const [key, value] of Object.entries(prompt_mapping)) {
+		prompt = prompt.replace(key, value);
+	}
+
+	return prompt;
+}
+
+//Construct a prompt for describing items/characters based on the given parameters.
+export function constructDescriptionPrompt(subject, subjectType='', descriptionType='', key=game.settings.get('ai-description-generator', 'key')) {
+	var prompt = 'Give a {descriptionType} description the game master can use for a {subject} {subjectType}.';
+	var settingsPrompt = game.settings.get('ai-description-generator', 'descriptionPrompt');
+	if (settingsPrompt != '') prompt = settingsPrompt;
+	prompt = basePrompt() + ' ' + prompt;
+	//If no subject type is given, remove it from the prompt.
+	if (subjectType == '') prompt = prompt.replace(' {subjectType}', '');
+	//If no description type is given remove it from the prompt.
+	if (descriptionType == '') prompt = prompt.replace(' {descriptionType}', '');	
+	var prompt_mapping = {		
 		'{subject}': subject,
 		'{subjectType}': subjectType,
 		'{descriptionType}': descriptionType
@@ -60,11 +75,54 @@ export function constructPrompt(language, system, world, subject, subjectType=''
 	}
 
 	//Send the prompt.
-	sendPrompt(prompt, key)
+	sendPrompt(prompt)
+}
+
+//Construct a prompt for describing combat based on the given parameters.
+export function constructCombatPrompt(attacker, isAttackerNamed, target, isTargetNamed, attack, isAttackHit, damage) {
+	var prompt = 'Write a description for a round of combat with the following information. Attacker: {attacker}. Target: {target}. Weapon used:{weapon}. Attack effect: {effect}.';
+	// Some other sentences that work well in this prompt:
+	// "You are an extremely skilled dungeon master who gives brief, colourful, in-character descriptions."
+	// "Avoid ever using two consecutive adjectives."
+	// "You should not provide any descriptions of PC thoughts, feelings, or actions beyond their combat move."
+
+	var settingsPrompt = game.settings.get('ai-description-generator', 'combatPrompt');
+	if (settingsPrompt != '') prompt = settingsPrompt;
+	prompt = basePrompt() + ' ' + prompt;
+	var effect = 'miss';
+	if(isAttackHit) {
+		effect = 'hit';
+		var targetHP = target.system.attributes.hp;
+		if(damage / targetHP < 0.2) effect = 'minor hit';
+		else if(damage > targetHP) effect = 'dying';
+		if(damage > targetHP + target.system.abilities.con) effect = 'dead';
+	}
+	var prompt_mapping = {
+		'{attacker}': attacker.name,
+		'{target}': target.name,
+		'{weapon}': attack,
+		'{effect}': effect
+	}
+	for (const [key, value] of Object.entries(prompt_mapping)) {
+		prompt = prompt.replace(key, value);
+	}
+
+	// TODO: Add to prompt "The fighters are already engaged in combat" / "The fighters have just engaged in combat" depending on whether this pair have just entered melee.
+	// (Prevents things like "PC charges across the room..." when they're already fighting.)
+
+	// TODO: Add setting to allow GM to write a brief description for named characters, so that what gets sent to the prompt is e.g.: 
+	// "Attacker: Kulnan, a large, ferocious human barbarian" or "Target: Gaedren Lamm, a nasty, wizened old human criminal."
+
+	// TODO: Add indefinite article to attacker and target names if they're not named.
+	// e.g.: "Attacker: a zombie" or "Target: an addu"
+
+	//Send the prompt.
+	sendPrompt(prompt)	
 }
 
 //Send a prompt the GPT-3.
-export function sendPrompt(prompt, key=game.settings.get('ai-description-generator', 'key')) {
+export function sendPrompt(prompt) {
+	var key = game.settings.get('ai-description-generator', 'key');
 	const speaker = game.settings.get('ai-description-generator', 'ai_name')
 
 	if (game.settings.get('ai-description-generator', 'debug')) {

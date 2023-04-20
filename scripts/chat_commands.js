@@ -1,4 +1,4 @@
-import { constructPrompt, sendPrompt } from "./generator.js";
+import { constructDescriptionPrompt, sendPrompt } from "./generator.js";
 
 
 export function addChatCommands(log, data, chatData) {
@@ -14,10 +14,7 @@ export function addChatCommands(log, data, chatData) {
 		const args = data.split(' ').slice(2, this.length);
 		if (args.length === 0) return;
 		var subject = args.join(' ');
-		constructPrompt(
-			game.settings.get('ai-description-generator', 'language'),
-			game.settings.get('ai-description-generator', 'system'),
-			game.settings.get('ai-description-generator', 'world'),
+		constructDescriptionPrompt(			
 			subject,
 			'',
 			'cool short sensory'
